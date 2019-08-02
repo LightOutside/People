@@ -8,6 +8,8 @@ import o.lizuro.core.IApp
 import o.lizuro.core.di.IToolsProvider
 import o.lizuro.core.tools.ILogger
 import o.lizuro.core.tools.IToaster
+import o.lizuro.people.tools.LoggerImpl
+import o.lizuro.people.tools.ToasterImpl
 import javax.inject.Singleton
 
 @Module
@@ -33,7 +35,6 @@ class ToolsModule {
 @Singleton
 @Component(modules = [ToolsModule::class])
 interface ToolsComponent : IToolsProvider {
-
     @Component.Builder
     interface Builder {
         fun build(): ToolsComponent
@@ -49,5 +50,4 @@ interface ToolsComponent : IToolsProvider {
                     .build()
         }
     }
-
 }

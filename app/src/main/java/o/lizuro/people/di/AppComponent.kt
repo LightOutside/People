@@ -27,7 +27,7 @@ interface AppComponent : IApplicationProvider {
                 //val contactsProvider = ContactsComponent.Initializer.init()
 
                 return DaggerAppComponent.builder()
-                    .toolsProvider(toolsProvider)
+                    .iToolsProvider(toolsProvider)
                     //.repositoryProvider(repositoryProvider)
                     //.contactsProvider(contactsProvider)
                     .build()
