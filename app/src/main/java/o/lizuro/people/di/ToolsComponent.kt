@@ -7,8 +7,10 @@ import dagger.Provides
 import o.lizuro.core.IApp
 import o.lizuro.core.di.IToolsProvider
 import o.lizuro.core.tools.ILogger
+import o.lizuro.core.tools.IPreferences
 import o.lizuro.core.tools.IToaster
 import o.lizuro.people.tools.LoggerImpl
+import o.lizuro.people.tools.PreferencesImpl
 import o.lizuro.people.tools.ToasterImpl
 import javax.inject.Singleton
 
@@ -28,6 +30,13 @@ class ToolsModule {
         @Singleton
         fun provideToaster(app: IApp): IToaster {
             return ToasterImpl(app.getApplicationContext())
+        }
+
+        @JvmStatic
+        @Provides
+        @Singleton
+        fun providePreferences(app: IApp): IPreferences {
+            return PreferencesImpl(app.getApplicationContext())
         }
     }
 }

@@ -1,5 +1,7 @@
 package o.lizuro.people.di
 
+import com.olizuro.contacts.di.ContactsApiComponent
+import com.olizuro.repo.di.RepoComponent
 import dagger.Component
 import o.lizuro.core.di.*
 import o.lizuro.people.PeopleApplication
@@ -8,7 +10,7 @@ import javax.inject.Singleton
 @Component(
     dependencies = [
         IToolsProvider::class,
-        IRepositoryProvider::class,
+        IRepoProvider::class,
         IContactsProvider::class
     ]
 )
@@ -23,13 +25,13 @@ interface AppComponent : IApplicationProvider {
             fun init(app: PeopleApplication): AppComponent {
 
                 val toolsProvider = ToolsComponent.Initializer.init(app)
-                //val repositoryProvider = RepositoryComponent.Initializer.init()
-                //val contactsProvider = ContactsComponent.Initializer.init()
+                val repoProvider = RepoComponent.Initializer.init(toolsProvider)
+                val contactsProvider = ContactsApiComponent.Initializer.init()
 
                 return DaggerAppComponent.builder()
                     .iToolsProvider(toolsProvider)
-                    //.repositoryProvider(repositoryProvider)
-                    //.contactsProvider(contactsProvider)
+                    .iRepoProvider(repoProvider)
+                    .iContactsProvider(contactsProvider)
                     .build()
             }
         }

@@ -8,6 +8,12 @@ android {
 }
 
 dependencies {
+    implementation local.core
+    implementation local.utils
+
+    implementation androidLib.values()
     implementation rxjava.values()
+    implementation dagger.values()
+    kapt daggerKapt.values()
     implementation gson.values()
 }

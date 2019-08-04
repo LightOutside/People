@@ -12,6 +12,7 @@ ext.versions = [
         supportLibrary      : "27.1.1",
         constraintLayout    : "1.1.3",
         kotlin              : "1.3.41",
+        kotlinCoroutines    : "1.3.0-RC",
         googleServices      : "4.3.0",
 
         //third party
@@ -20,7 +21,7 @@ ext.versions = [
         rxandroid           : "2.1.1",
         rxkotlin            : "2.1.0",
         dagger              : "2.19",
-        retrofit            : "2.4.0"
+        gson                : "2.8.2"
 ]
 
 ext.classpaths = [
@@ -34,15 +35,21 @@ ext.files = [
 ]
 
 ext.local = [
+        app             : project(':app'),
         utils           : project(':utils'),
-        core            : project(':core')
+        core            : project(':core'),
+        repo            : project(':repo'),
+        mainscreen      : project(':mainscreen'),
+        contacts        : project(':contacts')
 ]
 
 ext.androidLib = [
-        kotlin          : "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$versions.kotlin",
-        support4        : "com.android.support:support-v4:$versions.supportLibrary",
-        support_design  : "com.android.support:design:$versions.supportLibrary",
-        constraint      : "com.android.support.constraint:constraint-layout:$versions.constraintLayout"
+        kotlin                      : "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$versions.kotlin",
+        kotlin_coroutines           : "org.jetbrains.kotlinx:kotlinx-coroutines-core:$versions.kotlinCoroutines",
+        kotlin_coroutines_android   : "org.jetbrains.kotlinx:kotlinx-coroutines-android:$versions.kotlinCoroutines",
+        support4                    : "com.android.support:support-v4:$versions.supportLibrary",
+        support_design              : "com.android.support:design:$versions.supportLibrary",
+        constraint                  : "com.android.support.constraint:constraint-layout:$versions.constraintLayout"
 ]
 
 ext.dagger = [
@@ -64,8 +71,6 @@ ext.rxjava = [
         rxbinding_design: "com.jakewharton.rxbinding:rxbinding-design:$versions.rxbinding"
 ]
 
-ext.retrofit = [
-        retrofit        : "com.squareup.retrofit2:retrofit:$versions.retrofit",
-        retrofit_rxjava2: "com.squareup.retrofit2:adapter-rxjava2:$versions.retrofit",
-        retrofit_gson   : "com.squareup.retrofit2:converter-gson:$versions.retrofit"
+ext.gson = [
+        gson            : "com.google.code.gson:gson:$versions.gson"
 ]

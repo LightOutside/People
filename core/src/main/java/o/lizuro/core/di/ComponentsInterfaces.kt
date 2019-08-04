@@ -1,25 +1,25 @@
 package o.lizuro.core.di
 
 import o.lizuro.core.IApp
-import o.lizuro.core.contacts.IContactsNavigator
-import o.lizuro.core.contacts.IContactsUseCases
-import o.lizuro.core.repository.IRepository
+import o.lizuro.core.contacts.IContactsApi
+import o.lizuro.core.repo.IRepoUseCases
 import o.lizuro.core.tools.ILogger
+import o.lizuro.core.tools.IPreferences
 import o.lizuro.core.tools.IToaster
 
-interface IApplicationProvider : IToolsProvider, IContactsProvider, IRepositoryProvider
+interface IApplicationProvider : IToolsProvider, IContactsProvider, IRepoProvider
 
 interface IToolsProvider {
     fun provideApp(): IApp
     fun provideLogger(): ILogger
-    fun provideToast(): IToaster
+    fun provideToaster(): IToaster
+    fun providePreferences(): IPreferences
 }
 
 interface IContactsProvider {
-    fun provideContactListNavigator(): IContactsNavigator
-    fun provideContactListUseCases(): IContactsUseCases
+    fun provideContactApi(): IContactsApi
 }
 
-interface IRepositoryProvider {
-    fun provideRepo(): IRepository
+interface IRepoProvider {
+    fun provideRepo(): IRepoUseCases
 }
