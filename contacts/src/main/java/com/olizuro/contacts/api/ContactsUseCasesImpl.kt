@@ -1,6 +1,6 @@
 package com.olizuro.contacts.api
 
-import android.support.v7.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatActivity
 import com.olizuro.contacts.presentation.ContactsListFragment
 import o.lizuro.core.contacts.IContactsUseCases
 import javax.inject.Inject

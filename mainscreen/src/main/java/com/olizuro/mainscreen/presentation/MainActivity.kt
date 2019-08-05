@@ -1,7 +1,7 @@
 package com.olizuro.mainscreen.presentation
 
-import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import com.olizuro.mainscreen.R
 import com.olizuro.mainscreen.di.MainScreenComponent
 import o.lizuro.core.IApp

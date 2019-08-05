@@ -4,7 +4,7 @@ import com.google.gson.annotations.SerializedName
 import java.util.*
 
 enum class Temperament(val value: String) {
-    @SerializedName("vehicle")
+    @SerializedName("melancholic")
     MELANCHOLIC("melancholic"),
 
     @SerializedName("phlegmatic")

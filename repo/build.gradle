@@ -18,4 +18,5 @@ dependencies {
     kapt daggerKapt.values()
     implementation gson.values()
     implementation room.values()
+    kapt roomKapt.values()
 }

@@ -7,9 +7,6 @@ import dagger.android.ContributesAndroidInjector
 @Module
 interface ContactsListFragmentModule {
 
-    @ContributesAndroidInjector
-    fun contributeContactsListFragment(): ContactsListFragment
-
 //    @FragmentScope
     //TODO Bind vm
 }
