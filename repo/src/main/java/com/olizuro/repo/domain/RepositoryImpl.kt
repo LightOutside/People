@@ -4,14 +4,15 @@ import com.olizuro.repo.data.ILocalDataSource
 import com.olizuro.repo.data.INetworkDataSource
 import io.reactivex.processors.BehaviorProcessor
 import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
-import o.lizuro.core.repo.Contact
+import o.lizuro.core.entities.Contact
+import o.lizuro.core.tools.ILogger
 import o.lizuro.core.tools.IPreferences
 import javax.inject.Inject
 
 class RepositoryImpl @Inject constructor(
     private val preferences: IPreferences,
+    private val logger: ILogger,
     private val localDataSource: ILocalDataSource,
     private val networkDataSource: INetworkDataSource
 ) : IRepository {
@@ -35,7 +36,7 @@ class RepositoryImpl @Inject constructor(
                 //preferences.saveLong(PREFERENCE_KEY_DATA_UPDATE_TIMESTAMP, System.currentTimeMillis())
                 //TODO Save to db
 
-                contacts.onNext(listOf())
+                contacts.onNext(contactsFromGithub)
             }
 
 

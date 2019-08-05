@@ -1,4 +1,4 @@
-package o.lizuro.core.repo
+package o.lizuro.core.entities
 
 import com.google.gson.annotations.SerializedName
 import java.util.*
@@ -17,7 +17,7 @@ enum class Temperament(val value: String) {
     CHOLERIC("choleric")
 }
 
-data class EducationPeriod(val start: Date, val end: Date)
+data class EducationPeriod(val start: String, val end: String)
 
 data class Contact (
     val id: String,

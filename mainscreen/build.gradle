@@ -12,7 +12,8 @@ dependencies {
     implementation local.repo
     implementation local.utils
 
-    implementation androidLib.values()
+    implementation kotlinLibs.values()
+    implementation support.values()
     implementation rxjava.values()
     implementation dagger.values()
     kapt daggerKapt.values()

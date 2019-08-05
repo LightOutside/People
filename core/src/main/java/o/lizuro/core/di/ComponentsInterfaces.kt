@@ -1,7 +1,7 @@
 package o.lizuro.core.di
 
 import o.lizuro.core.IApp
-import o.lizuro.core.contacts.IContactsApi
+import o.lizuro.core.contacts.IContactsUseCases
 import o.lizuro.core.repo.IRepoUseCases
 import o.lizuro.core.tools.ILogger
 import o.lizuro.core.tools.IPreferences
@@ -17,9 +17,9 @@ interface IToolsProvider {
 }
 
 interface IContactsProvider {
-    fun provideContactApi(): IContactsApi
+    fun provideContactUseCases(): IContactsUseCases
 }
 
 interface IRepoProvider {
-    fun provideRepo(): IRepoUseCases
+    fun provideRepoUseCases(): IRepoUseCases
 }

@@ -1,6 +1,6 @@
 package o.lizuro.people.di
 
-import com.olizuro.contacts.di.ContactsApiComponent
+import com.olizuro.contacts.di.ContactsUseCasesComponent
 import com.olizuro.repo.di.RepoComponent
 import dagger.Component
 import o.lizuro.core.di.*
@@ -26,7 +26,7 @@ interface AppComponent : IApplicationProvider {
 
                 val toolsProvider = ToolsComponent.Initializer.init(app)
                 val repoProvider = RepoComponent.Initializer.init(toolsProvider)
-                val contactsProvider = ContactsApiComponent.Initializer.init()
+                val contactsProvider = ContactsUseCasesComponent.Initializer.init()
 
                 return DaggerAppComponent.builder()
                     .iToolsProvider(toolsProvider)

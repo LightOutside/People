@@ -1,7 +1,7 @@
 package com.olizuro.repo.domain
 
 import io.reactivex.Flowable
-import o.lizuro.core.repo.Contact
+import o.lizuro.core.entities.Contact
 import o.lizuro.core.repo.IRepoUseCases
 import javax.inject.Inject
 

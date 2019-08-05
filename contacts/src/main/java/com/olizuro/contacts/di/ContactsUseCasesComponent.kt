@@ -4,13 +4,13 @@ import dagger.Component
 import o.lizuro.core.di.IContactsProvider
 
 @Component(
-    modules = [ContactsApiModule::class]
+    modules = [ContactsUseCasesModule::class]
 )
-interface ContactsApiComponent : IContactsProvider {
+interface ContactsUseCasesComponent : IContactsProvider {
     class Initializer private constructor() {
         companion object {
             fun init(): IContactsProvider {
-                return DaggerContactsApiComponent.builder().build()
+                return DaggerContactsUseCasesComponent.builder().build()
             }
         }
     }

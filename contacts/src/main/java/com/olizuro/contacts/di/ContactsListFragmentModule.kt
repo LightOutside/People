@@ -1,11 +1,15 @@
 package com.olizuro.contacts.di
 
-import dagger.Binds
+import com.olizuro.contacts.presentation.ContactsListFragment
 import dagger.Module
-import o.lizuro.utils.di.general.FragmentScope
+import dagger.android.ContributesAndroidInjector
 
 @Module
 interface ContactsListFragmentModule {
+
+    @ContributesAndroidInjector
+    fun contributeContactsListFragment(): ContactsListFragment
+
 //    @FragmentScope
     //TODO Bind vm
 }

@@ -30,7 +30,7 @@ dependencies {
     implementation local.contacts
 
     implementation files.values()
-    implementation androidLib.values()
+    implementation kotlinLibs.values()
     implementation rxjava.values()
     implementation dagger.values()
     kapt daggerKapt.values()
