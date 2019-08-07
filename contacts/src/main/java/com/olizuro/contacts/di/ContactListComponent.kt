@@ -9,7 +9,7 @@ import o.lizuro.utils.di.annotations.FragmentScope
 
 @FragmentScope
 @Component(
-    dependencies = [IViewModelsProvider::class],
+    dependencies = [IApplicationProvider::class],
     modules = [ContactListModule::class]
 )
 interface ContactListComponent {
@@ -19,10 +19,10 @@ interface ContactListComponent {
     class Initializer private constructor() {
         companion object {
             fun init(
-                viewModelsProvider: IViewModelsProvider
+                applicationProvider: IApplicationProvider
             ): ContactListComponent {
                 return DaggerContactListComponent.builder()
-                    .iViewModelsProvider(viewModelsProvider)
+                    .iApplicationProvider(applicationProvider)
                     .build()
             }
         }

@@ -18,12 +18,13 @@ abstract class ContactListModule {
     @Module
     companion object {
         @Provides
-        fun providesIContactListViewModel(fragment: ContactListFragment, factory: ViewModelProvider.Factory) : IContactListViewModel {
+        fun providesIContactListViewModel(fragment: ContactListFragment, factory: ViewModelProvider.Factory) : ContactListViewModel {
             return ViewModelProviders.of(fragment, factory)[ContactListViewModel::class.java]
         }
     }
 
-
+    @Binds
+    abstract fun bindsIContactListViewModel(viewModel: ContactListViewModel): IContactListViewModel
 
     @ContributesAndroidInjector
     abstract fun bindsContactListFragment(): ContactListFragment

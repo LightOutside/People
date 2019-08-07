@@ -30,10 +30,6 @@ abstract class ViewModelsModule {
     @ViewModelKey(ContactListViewModel::class)
     abstract fun bindsContactListViewModel(viewModel: ContactListViewModel): ViewModel
 
-//    @Binds
-//    abstract fun bindsIContactListViewModel(viewModel: ContactListViewModel): IContactListViewModel
-
-
 }
 
 @Singleton
