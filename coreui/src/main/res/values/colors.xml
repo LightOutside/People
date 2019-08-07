@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="transparent">#00000000</color>
+
+    <color name="default_primary">#4C9069</color>
+    <color name="default_primary_saturate">#3D7254</color>
+    <color name="default_primary_text">#FFFFFF</color>
+    <color name="default_accent">#4D8F69</color>
+    <color name="default_accent_text">#FFFFFF</color>
+    <color name="default_background">#FFFFFF</color>
+    <color name="default_background_text">#E5000000</color>
+    <color name="default_background_text_dilute">#8A000000</color>
+    <color name="default_background_text_clickable">#269DF7</color>
+
+</resources>

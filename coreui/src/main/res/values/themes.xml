@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--Base application theme-->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="colorPrimary">?themePrimary</item>
+        <item name="colorPrimaryDark">?themePrimary_Saturate</item>
+        <item name="colorAccent">?themeAccent</item>
+
+        <item name="android:textColorPrimary">?themeBackgroundText</item>
+        <item name="android:textColorSecondary">?themeBackgroundText_Dilute</item>
+        <item name="android:textColorLink">?themeBackgroundText_Clickable</item>
+        <item name="android:textColorHint">?themeBackgroundText_Dilute</item>
+        <item name="colorControlNormal">?themePrimary</item>
+        <item name="android:colorBackground">?themeBackground</item>
+        <item name="android:colorForeground">?themeBackgroundText</item>
+
+        <item name="android:windowContentOverlay">@null</item>
+    </style>
+
+    <!--region Default theme-->
+
+    <style name="AppTheme.Default">
+        <item name="themePrimary">@color/default_primary</item>
+        <item name="themePrimary_Saturate">@color/default_primary_saturate</item>
+        <item name="themePrimaryText">@color/default_primary_text</item>
+
+        <item name="themeAccent">@color/default_accent</item>
+        <item name="themeAccentText">@color/default_accent_text</item>
+
+
+        <item name="themeBackground">@color/default_background</item>
+        <item name="themeBackgroundText">@color/default_background_text</item>
+        <item name="themeBackgroundText_Dilute">@color/default_background_text_dilute</item>
+        <item name="themeBackgroundText_Clickable">@color/default_background_text_clickable</item>
+    </style>
+
+    <style name="AppTheme.Default.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <!--endregion-->
+
+    <!--Put here another themes-->
+
+</resources>

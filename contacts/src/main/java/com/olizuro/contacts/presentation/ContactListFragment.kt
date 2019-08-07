@@ -6,35 +6,46 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModelProviders
 import com.olizuro.contacts.R
-import com.olizuro.contacts.di.ContactsListFragmentComponent
+import com.olizuro.contacts.di.ContactListComponent
+import com.olizuro.contacts.presentation.viewmodels.ContactListViewModel
 import o.lizuro.core.IApp
+import o.lizuro.core.contacts.IContactListViewModel
 import o.lizuro.core.contacts.IContactsUseCases
 import o.lizuro.core.repo.IRepoUseCases
 import javax.inject.Inject
 
-class ContactsListFragment : Fragment() {
-
-    @Inject
-    lateinit var repoUseCases: IRepoUseCases
-
-    @Inject
-    lateinit var contactsUseCases: IContactsUseCases
+class ContactListFragment : Fragment() {
 
     companion object {
-        const val TAG = "com.olizuro.contacts.presentation.ContactsListFragment"
+        const val TAG = "com.olizuro.contacts.presentation.ContactListFragment"
 
-        fun create(): ContactsListFragment {
-            return ContactsListFragment()
+        fun create(): ContactListFragment {
+            return ContactListFragment()
         }
     }
+
+//    @Inject
+//    lateinit var viewModelFactory: ViewModelProvider.Factory
+
+    @Inject
+    lateinit var viewModel: IContactListViewModel
+
+    //private lateinit var viewModel: ContactListViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        val k = viewModel
 
+ //       viewModel = ViewModelProviders.of(this, viewModelFactory)[ContactListViewModel::class.java]
+//        model.getUsers().observe(this, Observer<List<User>>{ users ->
+//            // update UI
+//        })
 
-        repoUseCases.loadContacts()
+        //repoUseCases.loadContacts()
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -45,7 +56,7 @@ class ContactsListFragment : Fragment() {
 
     override fun onAttach(context: Context) {
         activity?.let {
-            ContactsListFragmentComponent.Initializer
+            ContactListComponent.Initializer
                 .init((it.applicationContext as IApp).getAppComponent())
                 .inject(this)
         }

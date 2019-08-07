@@ -12,13 +12,5 @@ android {
 }
 
 dependencies {
-    implementation local.core
-    implementation local.coreui
-    implementation local.utils
 
-    implementation kotlinLibs.values()
-    implementation androidx.values()
-    implementation rxjava.values()
-    implementation dagger.values()
-    kapt daggerKapt.values()
 }

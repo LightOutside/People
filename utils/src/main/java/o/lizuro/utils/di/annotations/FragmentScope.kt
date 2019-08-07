@@ -1,4 +1,4 @@
-package o.lizuro.utils.di.general
+package o.lizuro.utils.di.annotations
 
 import javax.inject.Scope
 

@@ -12,7 +12,6 @@ dependencies {
     implementation local.utils
 
     implementation kotlinLibs.values()
-    implementation support.values()
     implementation rxjava.values()
     implementation dagger.values()
     kapt daggerKapt.values()

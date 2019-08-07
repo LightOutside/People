@@ -3,7 +3,7 @@ package com.olizuro.mainscreen.di
 import com.olizuro.mainscreen.presentation.MainActivity
 import dagger.Component
 import o.lizuro.core.di.IApplicationProvider
-import o.lizuro.utils.di.general.ActivityScope
+import o.lizuro.utils.di.annotations.ActivityScope
 
 @ActivityScope
 @Component(

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--region Theme attrs -->
+
+    <attr name="themePrimary" format="reference" />
+    <attr name="themePrimary_Saturate" format="reference" />
+    <attr name="themePrimaryText" format="reference" />
+
+    <attr name="themeAccent" format="reference" />
+    <attr name="themeAccentText" format="reference" />
+
+    <attr name="themeBackground" format="reference" />
+    <attr name="themeBackgroundText" format="reference" />
+    <attr name="themeBackgroundText_Dilute" format="reference" />
+    <attr name="themeBackgroundText_Clickable" format="reference" />
+
+    <!--endregion-->
+</resources>

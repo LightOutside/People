@@ -23,7 +23,7 @@ class LocalDataSourceImpl @Inject constructor(
     }
 }
 
-@Database(entities = [ContactDb::class], version = 1)
+@Database(entities = [ContactDb::class], version = 1, exportSchema = false)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun dao(): ContactsDao
 }

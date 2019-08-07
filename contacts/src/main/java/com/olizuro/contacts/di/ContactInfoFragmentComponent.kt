@@ -3,7 +3,7 @@ package com.olizuro.contacts.di
 import com.olizuro.contacts.presentation.ContactInfoFragment
 import dagger.Component
 import o.lizuro.core.di.IRepoProvider
-import o.lizuro.utils.di.general.FragmentScope
+import o.lizuro.utils.di.annotations.FragmentScope
 
 @FragmentScope
 @Component(

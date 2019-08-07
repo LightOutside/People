@@ -5,15 +5,19 @@ apply plugin: 'kotlin-kapt'
 
 android {
     compileSdkVersion versions.compileVersion
+    defaultConfig {
+        minSdkVersion versions.minVersion
+        targetSdkVersion versions.targetVersion
+    }
 }
 
 dependencies {
     implementation local.core
-    implementation local.repo
+    implementation local.coreui
     implementation local.utils
 
+    implementation androidx.values()
     implementation kotlinLibs.values()
-    implementation support.values()
     implementation rxjava.values()
     implementation dagger.values()
     kapt daggerKapt.values()

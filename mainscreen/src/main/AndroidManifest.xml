@@ -1,7 +1,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
           package="com.olizuro.mainscreen">
     <application>
-        <activity android:name=".presentation.MainActivity">
+        <activity android:name=".presentation.MainActivity"
+                  android:theme="@style/AppTheme.Default.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>

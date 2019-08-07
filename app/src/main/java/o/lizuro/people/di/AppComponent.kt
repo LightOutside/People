@@ -11,7 +11,8 @@ import javax.inject.Singleton
     dependencies = [
         IToolsProvider::class,
         IRepoProvider::class,
-        IContactsProvider::class
+        IContactsProvider::class,
+        IViewModelsProvider::class
     ]
 )
 @Singleton
@@ -27,11 +28,13 @@ interface AppComponent : IApplicationProvider {
                 val toolsProvider = ToolsComponent.Initializer.init(app)
                 val repoProvider = RepoComponent.Initializer.init(toolsProvider)
                 val contactsProvider = ContactsUseCasesComponent.Initializer.init()
+                val viewModelsProvider = ViewModelsComponent.Initializer.init(repoProvider, contactsProvider)
 
                 return DaggerAppComponent.builder()
                     .iToolsProvider(toolsProvider)
                     .iRepoProvider(repoProvider)
                     .iContactsProvider(contactsProvider)
+                    .iViewModelsProvider(viewModelsProvider)
                     .build()
             }
         }
