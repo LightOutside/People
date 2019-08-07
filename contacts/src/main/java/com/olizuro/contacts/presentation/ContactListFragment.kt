@@ -6,15 +6,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelProviders
 import com.olizuro.contacts.R
 import com.olizuro.contacts.di.ContactListComponent
-import com.olizuro.contacts.presentation.viewmodels.ContactListViewModel
 import o.lizuro.core.IApp
 import o.lizuro.core.contacts.IContactListViewModel
-import o.lizuro.core.contacts.IContactsUseCases
-import o.lizuro.core.repo.IRepoUseCases
 import javax.inject.Inject
 
 class ContactListFragment : Fragment() {

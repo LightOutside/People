@@ -3,7 +3,7 @@ package com.olizuro.contacts.di
 import dagger.Module
 
 @Module
-interface ContactInfoFragmentModule {
+interface ContactInfoModule {
     //@FragmentScope
     //TODO Binds vm
 }

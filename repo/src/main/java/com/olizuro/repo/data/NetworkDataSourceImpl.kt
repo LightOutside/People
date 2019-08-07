@@ -3,11 +3,8 @@ package com.olizuro.repo.data
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.channels.Channel
-import kotlinx.coroutines.channels.toList
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import o.lizuro.core.entities.Contact
 import java.net.MalformedURLException
 import java.net.URL

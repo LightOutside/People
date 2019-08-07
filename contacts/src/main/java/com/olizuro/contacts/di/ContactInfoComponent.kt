@@ -8,17 +8,17 @@ import o.lizuro.utils.di.annotations.FragmentScope
 @FragmentScope
 @Component(
     dependencies = [IRepoProvider::class],
-    modules = [ContactInfoFragmentModule::class]
+    modules = [ContactInfoModule::class]
 )
-interface ContactInfoFragmentComponent {
+interface ContactInfoComponent {
     fun inject(fragment: ContactInfoFragment)
 
     class Initializer private constructor() {
         companion object {
             fun init(
                 repoProvider: IRepoProvider
-            ): ContactInfoFragmentComponent {
-                return DaggerContactInfoFragmentComponent.builder()
+            ): ContactInfoComponent {
+                return DaggerContactInfoComponent.builder()
                     .iRepoProvider(repoProvider)
                     .build()
             }

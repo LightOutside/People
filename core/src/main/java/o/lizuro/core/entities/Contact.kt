@@ -1,7 +1,6 @@
 package o.lizuro.core.entities
 
 import com.google.gson.annotations.SerializedName
-import java.util.*
 
 enum class Temperament(val value: String) {
     @SerializedName("melancholic")

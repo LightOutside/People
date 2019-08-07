@@ -1,20 +1,15 @@
 package o.lizuro.people.di
 
-import androidx.lifecycle.ReportFragment
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelProviders
-import com.olizuro.contacts.presentation.ContactListFragment
 import com.olizuro.contacts.presentation.viewmodels.ContactListViewModel
 import dagger.Binds
 import dagger.Component
 import dagger.Module
-import dagger.Provides
 import dagger.multibindings.IntoMap
-import o.lizuro.core.contacts.IContactListViewModel
 import o.lizuro.core.di.IContactsProvider
 import o.lizuro.core.di.IRepoProvider
-import o.lizuro.core.di.IViewModelsProvider
+import o.lizuro.core.di.IViewModelFactoryProvider
 import o.lizuro.utils.di.annotations.ViewModelKey
 import o.lizuro.utils.di.general.ViewModelFactory
 import javax.inject.Singleton
@@ -37,11 +32,11 @@ abstract class ViewModelsModule {
     dependencies = [IRepoProvider::class, IContactsProvider::class],
     modules = [ViewModelsModule::class]
 )
-interface ViewModelsComponent : IViewModelsProvider {
+interface ViewModelFactoryComponent : IViewModelFactoryProvider {
     class Initializer private constructor() {
         companion object {
-            fun init(repoProvider: IRepoProvider, contactsProvider: IContactsProvider): IViewModelsProvider {
-                return DaggerViewModelsComponent
+            fun init(repoProvider: IRepoProvider, contactsProvider: IContactsProvider): IViewModelFactoryProvider {
+                return DaggerViewModelFactoryComponent
                     .builder()
                     .iRepoProvider(repoProvider)
                     .iContactsProvider(contactsProvider)

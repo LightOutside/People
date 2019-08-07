@@ -7,15 +7,15 @@ import o.lizuro.core.di.*
 import o.lizuro.people.PeopleApplication
 import javax.inject.Singleton
 
+@Singleton
 @Component(
     dependencies = [
         IToolsProvider::class,
         IRepoProvider::class,
         IContactsProvider::class,
-        IViewModelsProvider::class
+        IViewModelFactoryProvider::class
     ]
 )
-@Singleton
 interface AppComponent : IApplicationProvider {
 
     fun inject(app: PeopleApplication)
@@ -28,13 +28,13 @@ interface AppComponent : IApplicationProvider {
                 val toolsProvider = ToolsComponent.Initializer.init(app)
                 val repoProvider = RepoComponent.Initializer.init(toolsProvider)
                 val contactsProvider = ContactsUseCasesComponent.Initializer.init()
-                val viewModelsProvider = ViewModelsComponent.Initializer.init(repoProvider, contactsProvider)
+                val viewModelFactoryProvider = ViewModelFactoryComponent.Initializer.init(repoProvider, contactsProvider)
 
                 return DaggerAppComponent.builder()
                     .iToolsProvider(toolsProvider)
                     .iRepoProvider(repoProvider)
                     .iContactsProvider(contactsProvider)
-                    .iViewModelsProvider(viewModelsProvider)
+                    .iViewModelFactoryProvider(viewModelFactoryProvider)
                     .build()
             }
         }
