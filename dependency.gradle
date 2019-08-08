@@ -54,7 +54,8 @@ ext.kotlinLibs = [
 
 ext.androidx = [
         constraint_layout           : "androidx.constraintlayout:constraintlayout:$versions.constraintLayout",
-        lifecycle                   : "androidx.lifecycle:lifecycle-extensions:$versions.lifecycle"
+        lifecycle                   : "androidx.lifecycle:lifecycle-extensions:$versions.lifecycle",
+        material                    : "com.google.android.material:material:1.0.0-rc01"
 ]
 
 ext.dagger = [

@@ -8,11 +8,15 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import o.lizuro.core.entities.Contact
 import o.lizuro.core.entities.ContactsState
+import o.lizuro.core.tools.IErrorHandler
+import o.lizuro.core.tools.INetworkChecker
 import o.lizuro.core.tools.IPreferences
 import javax.inject.Inject
 
 class RepositoryImpl @Inject constructor(
     private val preferences: IPreferences,
+    private val networkChecker: INetworkChecker,
+    private val errorHandler: IErrorHandler,
     private val localDataSource: ILocalDataSource,
     private val networkDataSource: INetworkDataSource
 ) : IRepository {
@@ -36,12 +40,16 @@ class RepositoryImpl @Inject constructor(
             val dataTimestamp = preferences.loadLong(PREFERENCE_KEY_DATA_TIMESTAMP, 0L)
 
             if (currentTime - dataTimestamp > DATA_TTL || forceRefresh) {
-                val contactsFromGithub = networkDataSource.getContacts()
+                if(networkChecker.isOnline()) {
+                    val contactsFromGithub = networkDataSource.getContacts().sortedBy { it.name }
 
-                preferences.saveLong(PREFERENCE_KEY_DATA_TIMESTAMP, System.currentTimeMillis())
-                localDataSource.setContacts(contactsFromGithub)
+                    preferences.saveLong(PREFERENCE_KEY_DATA_TIMESTAMP, System.currentTimeMillis())
+                    localDataSource.setContacts(contactsFromGithub)
 
-                contacts.onNext(contactsFromGithub)
+                    contacts.onNext(contactsFromGithub)
+                } else {
+                    errorHandler.notifyError("Нет подключения к сети")
+                }
             } else {
                 val contactsFromDatabase = localDataSource.getContacts()
                 contacts.onNext(contactsFromDatabase)

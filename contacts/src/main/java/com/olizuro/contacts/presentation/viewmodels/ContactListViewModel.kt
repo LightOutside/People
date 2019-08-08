@@ -17,8 +17,6 @@ class ContactListViewModel @Inject constructor(
     private var contactsUseCases: IContactsUseCases
 ) : ViewModel(), IContactListViewModel {
 
-    //private val subscriptions = CompositeDisposable()
-
     private val inputProcessor = BehaviorProcessor.createDefault("")
 
     init {

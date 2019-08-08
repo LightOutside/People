@@ -21,6 +21,7 @@ import o.lizuro.core.IApp
 import o.lizuro.core.contacts.IContactListViewModel
 import o.lizuro.core.entities.Contact
 import o.lizuro.core.entities.ContactsState
+import o.lizuro.core.tools.IErrorHandler
 import o.lizuro.coreui.views.BaseFragment
 import o.lizuro.utils.context.getAttrColor
 import o.lizuro.utils.rx.storeToComposite
@@ -42,7 +43,8 @@ class ContactListFragment : BaseFragment() {
     @Inject
     lateinit var viewModel: IContactListViewModel
 
-
+    @Inject
+    lateinit var errorHandler: IErrorHandler
 
     private lateinit var input: SearchView
     private lateinit var pullToRefresh: SwipeRefreshLayout
@@ -52,7 +54,7 @@ class ContactListFragment : BaseFragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_contacts_list, container, false).apply {
             input = findViewById<SearchView>(R.id.input).apply {
-                this.queryTextChanges()
+                queryTextChanges()
                     .debounce(INPUT_DEBOUNCE, TimeUnit.MILLISECONDS)
                     .subscribe {
                         viewModel.inputTextChanged(it.toString())
@@ -88,11 +90,11 @@ class ContactListFragment : BaseFragment() {
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(
                 {
-                    dropListData()
+                    //dropListData()
                     (list.adapter as ContactsAdapter).submitList(it)
                 },
                 {
-                    //TODO Notify
+                    errorHandler.handleError(it)
                 }
             ).storeToComposite(onStartSubscriptions)
 
@@ -115,7 +117,7 @@ class ContactListFragment : BaseFragment() {
                     }
                 },
                 {
-                    //TODO Notify
+                    errorHandler.handleError(it)
                 }
             ).storeToComposite(onStartSubscriptions)
     }
@@ -132,49 +134,48 @@ class ContactListFragment : BaseFragment() {
     private fun dropListData() {
         (list.adapter as ContactsAdapter).submitList(null)
     }
+}
 
+private class ContactHolder(
+    root: View,
+    private val itemClick: (id: String) -> Unit
+) : RecyclerView.ViewHolder(root) {
+    private val root = root.findViewById<View>(R.id.root)
+    private val name = root.findViewById<AppCompatTextView>(R.id.name)
+    private val height = root.findViewById<AppCompatTextView>(R.id.height)
+    private val phone = root.findViewById<AppCompatTextView>(R.id.phone)
 
-    private class ContactHolder(
-        root: View,
-        private val itemClick: (id: String) -> Unit
-    ) : RecyclerView.ViewHolder(root) {
-        private val root = root.findViewById<View>(R.id.root)
-        private val name = root.findViewById<AppCompatTextView>(R.id.name)
-        private val height = root.findViewById<AppCompatTextView>(R.id.height)
-        private val phone = root.findViewById<AppCompatTextView>(R.id.phone)
+    fun bind(contact: Contact) {
+        root.setOnClickListener { itemClick(contact.id) }
+        name.text = contact.name
+        height.text = contact.height.toString()
+        phone.text = contact.phone
+    }
+}
 
-        fun bind(contact: Contact) {
-            root.setOnClickListener { itemClick(contact.id) }
-            name.text = contact.name
-            height.text = contact.height.toString()
-            phone.text = contact.phone
-        }
+private class ContactsDiffUtilsCallback : DiffUtil.ItemCallback<Contact>() {
+    override fun areItemsTheSame(oldItem: Contact, newItem: Contact): Boolean {
+        return oldItem.id == newItem.id
     }
 
-    private class ContactsDiffUtilsCallback : DiffUtil.ItemCallback<Contact>() {
-        override fun areItemsTheSame(oldItem: Contact, newItem: Contact): Boolean {
-            return true
-        }
+    override fun areContentsTheSame(oldItem: Contact, newItem: Contact): Boolean {
+        return true
+    }
+}
 
-        override fun areContentsTheSame(oldItem: Contact, newItem: Contact): Boolean {
-            return true
-        }
+private class ContactsAdapter(
+    private val context: Context?,
+    private val itemClick: (id: String) -> Unit
+) : ListAdapter<Contact, ContactHolder>(ContactsDiffUtilsCallback()) {
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ContactHolder {
+        return ContactHolder(
+            LayoutInflater.from(context).inflate(R.layout.view_contact_list_item, parent, false),
+            itemClick
+        )
     }
 
-    private class ContactsAdapter(
-        private val context: Context?,
-        private val itemClick: (id: String) -> Unit
-    ) : ListAdapter<Contact, ContactHolder>(ContactsDiffUtilsCallback()) {
-
-        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ContactHolder {
-            return ContactHolder(
-                LayoutInflater.from(context).inflate(R.layout.view_contact_list_item, parent, false),
-                itemClick
-            )
-        }
-
-        override fun onBindViewHolder(holder: ContactHolder, position: Int) {
-            holder.bind(getItem(position))
-        }
+    override fun onBindViewHolder(holder: ContactHolder, position: Int) {
+        holder.bind(getItem(position))
     }
 }

@@ -4,10 +4,7 @@ import androidx.lifecycle.ViewModelProvider
 import o.lizuro.core.IApp
 import o.lizuro.core.contacts.IContactsUseCases
 import o.lizuro.core.repo.IRepoUseCases
-import o.lizuro.core.tools.IErrorHandler
-import o.lizuro.core.tools.ILogger
-import o.lizuro.core.tools.IPreferences
-import o.lizuro.core.tools.IToaster
+import o.lizuro.core.tools.*
 
 interface IApplicationProvider : IToolsProvider, IContactsProvider, IRepoProvider, IViewModelFactoryProvider
 
@@ -17,6 +14,7 @@ interface IToolsProvider {
     fun provideToaster(): IToaster
     fun providePreferences(): IPreferences
     fun provideErrorHandler(): IErrorHandler
+    fun provideNetworkChecker(): INetworkChecker
 }
 
 interface IContactsProvider {

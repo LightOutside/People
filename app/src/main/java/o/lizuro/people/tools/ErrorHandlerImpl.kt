@@ -13,7 +13,13 @@ class ErrorHandlerImpl : IErrorHandler {
     }
 
     override fun handleError(th: Throwable) {
-        errorMessagesProcessor.
         //TODO Some logic for correct exceptions handling
+        th.message?.let {
+            notifyError(it)
+        }
+    }
+
+    override fun notifyError(message: String) {
+        errorMessagesProcessor.onNext(message)
     }
 }

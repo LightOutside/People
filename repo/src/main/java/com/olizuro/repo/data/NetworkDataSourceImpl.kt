@@ -1,18 +1,20 @@
 package com.olizuro.repo.data
 
-import android.util.Log
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
 import o.lizuro.core.entities.Contact
+import o.lizuro.core.tools.IErrorHandler
 import java.net.MalformedURLException
 import java.net.URL
 import java.util.concurrent.CopyOnWriteArrayList
 import javax.inject.Inject
 
-class NetworkDataSourceImpl @Inject constructor() : INetworkDataSource {
+class NetworkDataSourceImpl @Inject constructor(
+    private val errorHandler: IErrorHandler
+) : INetworkDataSource {
 
     private val sources = listOf(
         "https://raw.githubusercontent.com/SkbkonturMobile/mobile-test-droid/master/json/generated-01.json",
@@ -31,8 +33,7 @@ class NetworkDataSourceImpl @Inject constructor() : INetworkDataSource {
                 }
             }
         } catch (e: MalformedURLException) {
-            //TODO Notify
-            Log.d("qwe", e.message)
+            errorHandler.handleError(e)
         }
 
         contacts

@@ -6,12 +6,8 @@ import dagger.Module
 import dagger.Provides
 import o.lizuro.core.IApp
 import o.lizuro.core.di.IToolsProvider
-import o.lizuro.core.tools.ILogger
-import o.lizuro.core.tools.IPreferences
-import o.lizuro.core.tools.IToaster
-import o.lizuro.people.tools.LoggerImpl
-import o.lizuro.people.tools.PreferencesImpl
-import o.lizuro.people.tools.ToasterImpl
+import o.lizuro.core.tools.*
+import o.lizuro.people.tools.*
 import javax.inject.Singleton
 
 @Module
@@ -37,6 +33,20 @@ class ToolsModule {
         @Singleton
         fun providePreferences(app: IApp): IPreferences {
             return PreferencesImpl(app.getApplicationContext())
+        }
+
+        @JvmStatic
+        @Provides
+        @Singleton
+        fun provideErrorHandler(): IErrorHandler {
+            return ErrorHandlerImpl()
+        }
+
+        @JvmStatic
+        @Provides
+        @Singleton
+        fun provideNetworChecker(app: IApp): INetworkChecker {
+            return NetworkCheckerImpl(app.getApplicationContext())
         }
     }
 }
