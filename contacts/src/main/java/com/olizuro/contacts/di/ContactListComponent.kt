@@ -1,6 +1,6 @@
 package com.olizuro.contacts.di
 
-import com.olizuro.contacts.presentation.ContactListFragment
+import com.olizuro.contacts.presentation.views.ContactListFragment
 import dagger.Component
 import o.lizuro.core.di.IApplicationProvider
 import o.lizuro.utils.di.annotations.FragmentScope

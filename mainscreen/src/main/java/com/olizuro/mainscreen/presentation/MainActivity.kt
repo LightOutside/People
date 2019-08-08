@@ -22,6 +22,6 @@ class MainActivity : AppCompatActivity() {
 
         setContentView(R.layout.activity_main)
 
-        contactsUseCases.showContactsList(supportFragmentManager, R.id.content_container, false)
+        contactsUseCases.showContactsList(supportFragmentManager, android.R.id.content, false)
     }
 }

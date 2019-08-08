@@ -2,7 +2,7 @@ package com.olizuro.contacts.api
 
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
-import com.olizuro.contacts.presentation.ContactListFragment
+import com.olizuro.contacts.presentation.views.ContactListFragment
 import o.lizuro.core.contacts.IContactsUseCases
 import javax.inject.Inject
 

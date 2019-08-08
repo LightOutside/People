@@ -21,4 +21,5 @@ dependencies {
     implementation rxjava.values()
     implementation dagger.values()
     kapt daggerKapt.values()
+    implementation 'androidx.recyclerview:recyclerview:1.0.0'
 }

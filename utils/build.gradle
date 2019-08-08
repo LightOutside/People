@@ -9,6 +9,7 @@ android {
 
 dependencies {
     implementation androidx.values()
+    implementation rxjava.values()
     implementation dagger.values()
     kapt daggerKapt.values()
 }

@@ -1,5 +1,6 @@
 package com.olizuro.repo.data
 
+import android.util.Log
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import kotlinx.coroutines.Dispatchers
@@ -31,6 +32,7 @@ class NetworkDataSourceImpl @Inject constructor() : INetworkDataSource {
             }
         } catch (e: MalformedURLException) {
             //TODO Notify
+            Log.d("qwe", e.message)
         }
 
         contacts

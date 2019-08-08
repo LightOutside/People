@@ -32,6 +32,7 @@ abstract class AppDatabase : RoomDatabase() {
 data class ContactDb(
     @PrimaryKey val id: String,
     @ColumnInfo(name = "name") val name: String,
+    @ColumnInfo(name = "phone") val phone: String,
     @ColumnInfo(name = "height") val height: Float,
     @ColumnInfo(name = "biography") val biography: String,
     @ColumnInfo(name = "temperament") val temperament: String,
@@ -55,6 +56,7 @@ fun Contact.toContactDb() : ContactDb {
     return ContactDb(
         this.id,
         this.name,
+        this.phone,
         this.height,
         this.biography,
         this.temperament.value,
@@ -67,6 +69,7 @@ fun ContactDb.toContact() : Contact {
     return Contact(
         this.id,
         this.name,
+        this.phone,
         this.height,
         this.biography,
         Temperament.values().find { it.value == this.temperament } ?: throw Exception("Unknown 'temperament', probably database is corrupted"),

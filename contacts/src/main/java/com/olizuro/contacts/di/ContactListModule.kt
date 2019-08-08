@@ -2,7 +2,7 @@ package com.olizuro.contacts.di
 
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
-import com.olizuro.contacts.presentation.ContactListFragment
+import com.olizuro.contacts.presentation.views.ContactListFragment
 import com.olizuro.contacts.presentation.viewmodels.ContactListViewModel
 import dagger.Binds
 import dagger.Module

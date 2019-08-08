@@ -2,10 +2,12 @@ package com.olizuro.repo.domain
 
 import com.olizuro.repo.data.ILocalDataSource
 import com.olizuro.repo.data.INetworkDataSource
+import io.reactivex.Flowable
 import io.reactivex.processors.BehaviorProcessor
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import o.lizuro.core.entities.Contact
+import o.lizuro.core.entities.ContactsState
 import o.lizuro.core.tools.IPreferences
 import javax.inject.Inject
 
@@ -24,12 +26,16 @@ class RepositoryImpl @Inject constructor(
 
     override val contacts: BehaviorProcessor<List<Contact>> = BehaviorProcessor.createDefault(listOf())
 
-    override fun loadContacts() {
+    override val contactsState: BehaviorProcessor<ContactsState> = BehaviorProcessor.createDefault(ContactsState.LOADING)
+
+    override fun loadContacts(forceRefresh: Boolean) {
+        contactsState.onNext(ContactsState.LOADING)
+
         GlobalScope.launch {
             val currentTime = System.currentTimeMillis()
-            val dataTimestamp = preferences.loadLong(PREFERENCE_KEY_DATA_TIMESTAMP, currentTime)
+            val dataTimestamp = preferences.loadLong(PREFERENCE_KEY_DATA_TIMESTAMP, 0L)
 
-            if (currentTime - dataTimestamp > DATA_TTL) {
+            if (currentTime - dataTimestamp > DATA_TTL || forceRefresh) {
                 val contactsFromGithub = networkDataSource.getContacts()
 
                 preferences.saveLong(PREFERENCE_KEY_DATA_TIMESTAMP, System.currentTimeMillis())
@@ -40,6 +46,8 @@ class RepositoryImpl @Inject constructor(
                 val contactsFromDatabase = localDataSource.getContacts()
                 contacts.onNext(contactsFromDatabase)
             }
+
+            contactsState.onNext(ContactsState.LOADED)
         }
     }
 }
