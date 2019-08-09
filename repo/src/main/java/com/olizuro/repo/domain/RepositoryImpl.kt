@@ -11,6 +11,8 @@ import o.lizuro.core.entities.ContactsState
 import o.lizuro.core.tools.IErrorHandler
 import o.lizuro.core.tools.INetworkChecker
 import o.lizuro.core.tools.IPreferences
+import o.lizuro.utils.data.TrieBuilder
+import java.lang.Exception
 import javax.inject.Inject
 
 class RepositoryImpl @Inject constructor(
@@ -28,9 +30,13 @@ class RepositoryImpl @Inject constructor(
         private const val DATA_TTL = 60 * 1000 //1 min
     }
 
-    override val contacts: BehaviorProcessor<List<Contact>> = BehaviorProcessor.createDefault(listOf())
+    private val contactsMap = HashMap<String, Contact>()
+    private val contactsTrie = TrieBuilder.empty<String>()
+    private var prefix = ""
 
+    override val contacts: BehaviorProcessor<List<String>> = BehaviorProcessor.createDefault(listOf())
     override val contactsState: BehaviorProcessor<ContactsState> = BehaviorProcessor.createDefault(ContactsState.LOADING)
+
 
     override fun loadContacts(forceRefresh: Boolean) {
         contactsState.onNext(ContactsState.LOADING)
@@ -41,21 +47,45 @@ class RepositoryImpl @Inject constructor(
 
             if (currentTime - dataTimestamp > DATA_TTL || forceRefresh) {
                 if(networkChecker.isOnline()) {
-                    val contactsFromGithub = networkDataSource.getContacts().sortedBy { it.name }
+                    val contactsFromGithub = networkDataSource.getContacts()
 
                     preferences.saveLong(PREFERENCE_KEY_DATA_TIMESTAMP, System.currentTimeMillis())
                     localDataSource.setContacts(contactsFromGithub)
 
-                    contacts.onNext(contactsFromGithub)
+                    setupContacts(contactsFromGithub)
                 } else {
                     errorHandler.notifyError("Нет подключения к сети")
                 }
             } else {
                 val contactsFromDatabase = localDataSource.getContacts()
-                contacts.onNext(contactsFromDatabase)
+                setupContacts(contactsFromDatabase)
             }
 
             contactsState.onNext(ContactsState.LOADED)
         }
+    }
+
+    @Throws(Exception::class)
+    override fun getContact(id: String): Contact {
+        return contactsMap[id] ?: throw Exception("Can't find Contact with id: $id")
+    }
+
+    override fun setContactsPrefix(prefix: String) {
+        this.prefix = prefix
+        contacts.onNext(if (prefix.isEmpty()) contactsMap.keys.toList() else contactsTrie.complete(prefix))
+    }
+
+    private fun setupContacts(contactsList: List<Contact>) {
+        contactsList.forEach {
+            contactsMap[it.id] = it
+
+            val (firstName, secondName) = it.name.split(" ")
+            contactsTrie.add(firstName.toLowerCase(), it.id)
+            contactsTrie.add(secondName.toLowerCase(), it.id)
+            val phonePlain = Regex("[^0-9]").replace(it.phone, "")
+            contactsTrie.add(phonePlain, it.id)
+        }
+
+        contacts.onNext(contactsMap.keys.toList())
     }
 }

@@ -14,11 +14,19 @@ class RepoUseCasesImpl @Inject constructor(
         repository.loadContacts(forceRefresh)
     }
 
+    override fun setContactsPrefix(prefix: String) {
+        repository.setContactsPrefix(prefix)
+    }
+
     override fun getContactsState(): Flowable<ContactsState> {
         return repository.contactsState
     }
 
-    override fun getContacts(): Flowable<List<Contact>> {
+    override fun getContact(id: String): Contact {
+        return repository.getContact(id)
+    }
+
+    override fun getContacts(): Flowable<List<String>> {
         return repository.contacts
     }
 }

@@ -6,6 +6,10 @@ import o.lizuro.core.entities.ContactsState
 
 interface IRepoUseCases {
     fun loadContacts(forceRefresh: Boolean)
-    fun getContacts() : Flowable<List<Contact>>
+    fun setContactsPrefix(prefix: String)
+
+    fun getContact(id: String) : Contact
+    fun getContacts() : Flowable<List<String>>
+
     fun getContactsState(): Flowable<ContactsState>
 }
