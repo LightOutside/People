@@ -30,8 +30,8 @@ class RepositoryImpl @Inject constructor(
         private const val DATA_TTL = 60 * 1000 //1 min
     }
 
-    private val contactsMap = HashMap<String, Contact>()
-    private val contactsTrie = TrieBuilder.empty<String>()
+    private var contactsMap = HashMap<String, Contact>()
+    private var contactsTrie = TrieBuilder.empty<String>()
     private var prefix = ""
 
     override val contacts: BehaviorProcessor<List<String>> = BehaviorProcessor.createDefault(listOf())
@@ -39,6 +39,8 @@ class RepositoryImpl @Inject constructor(
 
 
     override fun loadContacts(forceRefresh: Boolean) {
+        dropContacts()
+
         contactsState.onNext(ContactsState.LOADING)
 
         GlobalScope.launch {
@@ -46,6 +48,7 @@ class RepositoryImpl @Inject constructor(
             val dataTimestamp = preferences.loadLong(PREFERENCE_KEY_DATA_TIMESTAMP, 0L)
 
             if (currentTime - dataTimestamp > DATA_TTL || forceRefresh) {
+
                 if(networkChecker.isOnline()) {
                     val contactsFromGithub = networkDataSource.getContacts()
 
@@ -79,15 +82,17 @@ class RepositoryImpl @Inject constructor(
     private fun setupContacts(contactsList: List<Contact>) {
         contactsList.forEach {
             contactsMap[it.id] = it
-
-            //val (firstName, secondName) = it.name.split(" ")
             contactsTrie.add(it.name.toLowerCase(), it.id)
-            //contactsTrie.add(secondName.toLowerCase(), it.id)
             val phonePlain = Regex("[^0-9]").replace(it.phone, "")
             contactsTrie.add(phonePlain, it.id)
         }
 
         val filteredContacts = if (prefix.isEmpty()) contactsMap.keys.toList() else contactsTrie.get(prefix, true)
         contacts.onNext(filteredContacts)
+    }
+
+    private fun dropContacts() {
+        contactsTrie = TrieBuilder.empty()
+        contactsMap.clear()
     }
 }
