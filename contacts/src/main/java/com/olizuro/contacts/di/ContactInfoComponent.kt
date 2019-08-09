@@ -2,12 +2,13 @@ package com.olizuro.contacts.di
 
 import com.olizuro.contacts.presentation.views.ContactInfoFragment
 import dagger.Component
+import o.lizuro.core.di.IApplicationProvider
 import o.lizuro.core.di.IRepoProvider
 import o.lizuro.utils.di.annotations.FragmentScope
 
 @FragmentScope
 @Component(
-    dependencies = [IRepoProvider::class],
+    dependencies = [IApplicationProvider::class],
     modules = [ContactInfoModule::class]
 )
 interface ContactInfoComponent {
@@ -16,10 +17,10 @@ interface ContactInfoComponent {
     class Initializer private constructor() {
         companion object {
             fun init(
-                repoProvider: IRepoProvider
+                applicationProvider: IApplicationProvider
             ): ContactInfoComponent {
                 return DaggerContactInfoComponent.builder()
-                    .iRepoProvider(repoProvider)
+                    .iApplicationProvider(applicationProvider)
                     .build()
             }
         }

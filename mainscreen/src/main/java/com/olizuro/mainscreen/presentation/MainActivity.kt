@@ -42,7 +42,7 @@ class MainActivity : AppCompatActivity() {
         setupErrorHandler()
 
 
-        contactsUseCases.showContactsList(supportFragmentManager, android.R.id.content, false)
+        contactsUseCases.showContactsList(supportFragmentManager, R.id.content, false)
     }
 
     override fun onDestroy() {
@@ -55,7 +55,7 @@ class MainActivity : AppCompatActivity() {
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(
                 {
-                    Snackbar.make(findViewById<View>(android.R.id.content), it, Snackbar.LENGTH_LONG).show()
+                    Snackbar.make(findViewById<View>(R.id.content), it, Snackbar.LENGTH_LONG).show()
                 },
                 {
                     logger.d("Oh, wait!")

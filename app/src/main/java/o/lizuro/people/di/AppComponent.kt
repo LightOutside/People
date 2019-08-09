@@ -28,7 +28,7 @@ interface AppComponent : IApplicationProvider {
                 val toolsProvider = ToolsComponent.Initializer.init(app)
                 val repoProvider = RepoComponent.Initializer.init(toolsProvider)
                 val contactsProvider = ContactsUseCasesComponent.Initializer.init()
-                val viewModelFactoryProvider = ViewModelFactoryComponent.Initializer.init(repoProvider, contactsProvider)
+                val viewModelFactoryProvider = ViewModelFactoryComponent.Initializer.init(repoProvider, contactsProvider, toolsProvider)
 
                 return DaggerAppComponent.builder()
                     .iToolsProvider(toolsProvider)

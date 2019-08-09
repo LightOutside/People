@@ -1,6 +1,8 @@
 package com.olizuro.contacts.presentation.viewmodels
 
+import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.ViewModel
+import com.olizuro.contacts.R
 import io.reactivex.Flowable
 import o.lizuro.core.contacts.IContactListViewModel
 import o.lizuro.core.contacts.IContactsUseCases
@@ -14,13 +16,12 @@ class ContactListViewModel @Inject constructor(
     private var contactsUseCases: IContactsUseCases
 ) : ViewModel(), IContactListViewModel {
 
-
     init {
         repoUseCases.loadContacts(false)
     }
 
-    override fun getContacts(): Flowable<List<Contact>> {
-        return repoUseCases.getContacts().map { it.map { id -> repoUseCases.getContact(id) } }
+    override fun getContacts(): Flowable<List<String>> {
+        return repoUseCases.getContacts()
     }
 
     override fun getContactsState(): Flowable<ContactsState> {
@@ -31,9 +32,8 @@ class ContactListViewModel @Inject constructor(
         repoUseCases.setContactsPrefix(text.toLowerCase())
     }
 
-    override fun contactSelected(contactId: String) {
-        //TODO Show ContactInfo fragment
-        //contactsUseCases.showContactInfo()
+    override fun contactSelected(contactId: String, fragmentManager: FragmentManager) {
+        contactsUseCases.showContactInfo(fragmentManager, R.id.content, true, contactId)
     }
 
     override fun pullToRefresh() {

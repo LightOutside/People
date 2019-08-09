@@ -53,6 +53,7 @@ class RepositoryImpl @Inject constructor(
                     localDataSource.setContacts(contactsFromGithub)
 
                     setupContacts(contactsFromGithub)
+
                 } else {
                     errorHandler.notifyError("Нет подключения к сети")
                 }
@@ -60,7 +61,6 @@ class RepositoryImpl @Inject constructor(
                 val contactsFromDatabase = localDataSource.getContacts()
                 setupContacts(contactsFromDatabase)
             }
-
             contactsState.onNext(ContactsState.LOADED)
         }
     }
@@ -72,20 +72,22 @@ class RepositoryImpl @Inject constructor(
 
     override fun setContactsPrefix(prefix: String) {
         this.prefix = prefix
-        contacts.onNext(if (prefix.isEmpty()) contactsMap.keys.toList() else contactsTrie.complete(prefix))
+        val filteredContacts = if (prefix.isEmpty()) contactsMap.keys.toList() else contactsTrie.get(prefix, true)
+        contacts.onNext(filteredContacts)
     }
 
     private fun setupContacts(contactsList: List<Contact>) {
         contactsList.forEach {
             contactsMap[it.id] = it
 
-            val (firstName, secondName) = it.name.split(" ")
-            contactsTrie.add(firstName.toLowerCase(), it.id)
-            contactsTrie.add(secondName.toLowerCase(), it.id)
+            //val (firstName, secondName) = it.name.split(" ")
+            contactsTrie.add(it.name.toLowerCase(), it.id)
+            //contactsTrie.add(secondName.toLowerCase(), it.id)
             val phonePlain = Regex("[^0-9]").replace(it.phone, "")
             contactsTrie.add(phonePlain, it.id)
         }
 
-        contacts.onNext(contactsMap.keys.toList())
+        val filteredContacts = if (prefix.isEmpty()) contactsMap.keys.toList() else contactsTrie.get(prefix, true)
+        contacts.onNext(filteredContacts)
     }
 }

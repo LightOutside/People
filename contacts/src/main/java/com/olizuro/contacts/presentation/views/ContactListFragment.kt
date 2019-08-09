@@ -21,6 +21,7 @@ import o.lizuro.core.IApp
 import o.lizuro.core.contacts.IContactListViewModel
 import o.lizuro.core.entities.Contact
 import o.lizuro.core.entities.ContactsState
+import o.lizuro.core.repo.IRepoUseCases
 import o.lizuro.core.tools.IErrorHandler
 import o.lizuro.coreui.views.BaseFragment
 import o.lizuro.utils.context.getAttrColor
@@ -44,6 +45,9 @@ class ContactListFragment : BaseFragment() {
     lateinit var viewModel: IContactListViewModel
 
     @Inject
+    lateinit var repoUseCases: IRepoUseCases
+
+    @Inject
     lateinit var errorHandler: IErrorHandler
 
     private lateinit var input: SearchView
@@ -52,14 +56,8 @@ class ContactListFragment : BaseFragment() {
     private lateinit var loader: ProgressBar
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.fragment_contacts_list, container, false).apply {
-            input = findViewById<SearchView>(R.id.input).apply {
-                queryTextChanges()
-                    .debounce(INPUT_DEBOUNCE, TimeUnit.MILLISECONDS)
-                    .subscribe {
-                        viewModel.inputTextChanged(it.toString())
-                    }
-            }
+        return inflater.inflate(R.layout.fragment_contact_list, container, false).apply {
+            input = findViewById(R.id.input)
 
             pullToRefresh = findViewById<SwipeRefreshLayout>(R.id.pull_to_refresh).apply {
                 setColorSchemeColors(
@@ -73,7 +71,11 @@ class ContactListFragment : BaseFragment() {
 
             list = findViewById<RecyclerView>(R.id.list).apply {
                 layoutManager = LinearLayoutManager(context)
-                adapter = ContactsAdapter(context) { viewModel.contactSelected(it) }
+                adapter = ContactsAdapter(context, repoUseCases) {
+                    activity?.run {
+                        viewModel.contactSelected(it, this.supportFragmentManager)
+                    }
+                }
                 addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
             }
 
@@ -85,6 +87,18 @@ class ContactListFragment : BaseFragment() {
 
     override fun onStart() {
         super.onStart()
+
+        input.queryTextChanges()
+            .debounce(INPUT_DEBOUNCE, TimeUnit.MILLISECONDS)
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(
+                {
+                    viewModel.inputTextChanged(it.toString())
+                },
+                {
+                    errorHandler.handleError(it)
+                }
+            ).storeToComposite(onStartSubscriptions)
 
         viewModel.getContacts()
             .observeOn(AndroidSchedulers.mainThread())
@@ -104,7 +118,7 @@ class ContactListFragment : BaseFragment() {
                 {
                     pullToRefresh.isRefreshing = false
 
-                    when(it) {
+                    when (it) {
                         ContactsState.LOADING -> {
                             list.visibility = GONE
                             loader.visibility = VISIBLE
@@ -113,7 +127,8 @@ class ContactListFragment : BaseFragment() {
                             list.visibility = VISIBLE
                             loader.visibility = GONE
                         }
-                        else -> { /*do nothing*/ }
+                        else -> { /*do nothing*/
+                        }
                     }
                 },
                 {
@@ -138,6 +153,7 @@ class ContactListFragment : BaseFragment() {
 
 private class ContactHolder(
     root: View,
+    private val repoUseCases: IRepoUseCases,
     private val itemClick: (id: String) -> Unit
 ) : RecyclerView.ViewHolder(root) {
     private val root = root.findViewById<View>(R.id.root)
@@ -145,32 +161,35 @@ private class ContactHolder(
     private val height = root.findViewById<AppCompatTextView>(R.id.height)
     private val phone = root.findViewById<AppCompatTextView>(R.id.phone)
 
-    fun bind(contact: Contact) {
-        root.setOnClickListener { itemClick(contact.id) }
+    fun bind(contactId: String) {
+        root.setOnClickListener { itemClick(contactId) }
+        val contact = repoUseCases.getContact(contactId)
         name.text = contact.name
         height.text = contact.height.toString()
         phone.text = contact.phone
     }
 }
 
-private class ContactsDiffUtilsCallback : DiffUtil.ItemCallback<Contact>() {
-    override fun areItemsTheSame(oldItem: Contact, newItem: Contact): Boolean {
-        return oldItem.id == newItem.id
+private class ContactsDiffUtilsCallback : DiffUtil.ItemCallback<String>() {
+    override fun areItemsTheSame(oldItem: String, newItem: String): Boolean {
+        return oldItem == newItem
     }
 
-    override fun areContentsTheSame(oldItem: Contact, newItem: Contact): Boolean {
+    override fun areContentsTheSame(oldItem: String, newItem: String): Boolean {
         return true
     }
 }
 
 private class ContactsAdapter(
     private val context: Context?,
+    private val repoUseCases: IRepoUseCases,
     private val itemClick: (id: String) -> Unit
-) : ListAdapter<Contact, ContactHolder>(ContactsDiffUtilsCallback()) {
+) : ListAdapter<String, ContactHolder>(ContactsDiffUtilsCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ContactHolder {
         return ContactHolder(
             LayoutInflater.from(context).inflate(R.layout.view_contact_list_item, parent, false),
+            repoUseCases,
             itemClick
         )
     }

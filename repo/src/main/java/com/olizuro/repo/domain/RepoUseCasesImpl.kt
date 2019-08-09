@@ -5,7 +5,9 @@ import o.lizuro.core.entities.Contact
 import o.lizuro.core.entities.ContactsState
 import o.lizuro.core.repo.IRepoUseCases
 import javax.inject.Inject
+import javax.inject.Singleton
 
+@Singleton
 class RepoUseCasesImpl @Inject constructor(
     private val repository: IRepository
 ) : IRepoUseCases {

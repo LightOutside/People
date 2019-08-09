@@ -16,39 +16,25 @@ data class Trie<T>(
         }
     }
 
-    fun get(word: String): List<T> {
+    fun get(word: String, isPrefix: Boolean): List<T> {
         val first = word.first()
 
         return find(first)?.run {
             when (word.length) {
-                1 -> indices
-                else -> get(word.drop(1))
+                1 -> if(isPrefix) getAllIndicesFrom(this) else indices
+                else -> get(word.drop(1), isPrefix)
             }
         } ?: listOf()
     }
 
-    fun complete(word: String): List<T> {
-        val first = word.first()
+    private fun getAllIndicesFrom(trie: Trie<T>) : ArrayList<T> {
+        val result = ArrayList(trie.indices)
 
-        return find(first)?.run {
-            when (word.length) {
-                1 -> getAllFrom(this)
-                else -> get(word.drop(1))
-            }
-        } ?: listOf()
-    }
-
-    private fun getAllFrom(trie: Trie<T>) : List<T> {
-        val result = arrayListOf<T>()
-        collectValues(trie, result)
-        return result
-    }
-
-    private fun collectValues(trie: Trie<T>, result: ArrayList<T>) {
-        result.addAll(trie.indices)
         trie.children.forEach {
-            collectValues(it, result)
+            result.addAll(getAllIndicesFrom(it))
         }
+
+        return result
     }
 
     private fun findOrCreate(char: Char) =
