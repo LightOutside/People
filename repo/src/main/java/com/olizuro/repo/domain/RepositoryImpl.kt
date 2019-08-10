@@ -93,6 +93,5 @@ class RepositoryImpl @Inject constructor(
 
     private fun dropContacts() {
         contactsTrie = TrieBuilder.empty()
-        contactsMap.clear()
     }
 }
