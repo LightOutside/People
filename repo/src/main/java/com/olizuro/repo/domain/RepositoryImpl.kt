@@ -4,6 +4,7 @@ import com.olizuro.repo.data.ILocalDataSource
 import com.olizuro.repo.data.INetworkDataSource
 import io.reactivex.Flowable
 import io.reactivex.processors.BehaviorProcessor
+import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import o.lizuro.core.entities.Contact
@@ -43,7 +44,11 @@ class RepositoryImpl @Inject constructor(
 
         contactsState.onNext(ContactsState.LOADING)
 
-        GlobalScope.launch {
+        val exceptionHandler = CoroutineExceptionHandler { _, exception ->
+            errorHandler.handleError(exception)
+        }
+
+        GlobalScope.launch(exceptionHandler) {
             val currentTime = System.currentTimeMillis()
             val dataTimestamp = preferences.loadLong(PREFERENCE_KEY_DATA_TIMESTAMP, 0L)
 
@@ -56,7 +61,6 @@ class RepositoryImpl @Inject constructor(
                     localDataSource.setContacts(contactsFromGithub)
 
                     setupContacts(contactsFromGithub)
-
                 } else {
                     errorHandler.notifyError("Нет подключения к сети")
                 }
@@ -64,6 +68,7 @@ class RepositoryImpl @Inject constructor(
                 val contactsFromDatabase = localDataSource.getContacts()
                 setupContacts(contactsFromDatabase)
             }
+
             contactsState.onNext(ContactsState.LOADED)
         }
     }
