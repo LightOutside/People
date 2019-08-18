@@ -5,8 +5,6 @@ import io.reactivex.Flowable
 import o.lizuro.core.entities.Contact
 
 interface IContactInfoViewModel {
-    fun getContact() : Flowable<Contact>
-
-    fun setContactId(contactId: String)
-    fun showDialer(context: Context)
+    fun getContact(id: String) : Flowable<Contact>
+    fun showDialer(context: Context, phone: String)
 }

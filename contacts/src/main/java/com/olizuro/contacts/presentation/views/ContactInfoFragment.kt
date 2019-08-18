@@ -61,7 +61,7 @@ class ContactInfoFragment : BaseFragment() {
 
             name = findViewById(R.id.name)
             phone = findViewById<AppCompatTextView>(R.id.phone).apply {
-                setOnClickListener { viewModel.showDialer(context) }
+                setOnClickListener { viewModel.showDialer(context, text.toString()) }
             }
             temperament = findViewById(R.id.temperament)
             educationPeriod = findViewById(R.id.education_period)
@@ -69,18 +69,10 @@ class ContactInfoFragment : BaseFragment() {
         }
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        viewModel.setContactId(
-            arguments?.getString(BUNDLE_CONTACT_ID)
-                ?: throw IllegalArgumentException("Missing [contactId] argument for ContactInfoFragment")
-        )
-    }
-
     override fun onStart() {
         super.onStart()
 
-        viewModel.getContact()
+        viewModel.getContact(arguments?.getString(BUNDLE_CONTACT_ID) ?: throw IllegalArgumentException("Missing [contactId] argument for ContactInfoFragment"))
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(
                 {

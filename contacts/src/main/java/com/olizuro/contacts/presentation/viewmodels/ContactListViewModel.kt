@@ -7,7 +7,7 @@ import io.reactivex.Flowable
 import o.lizuro.core.contacts.IContactListViewModel
 import o.lizuro.core.contacts.IContactsUseCases
 import o.lizuro.core.entities.Contact
-import o.lizuro.core.entities.ContactsState
+import o.lizuro.core.entities.DataState
 import o.lizuro.core.repo.IRepoUseCases
 import javax.inject.Inject
 
@@ -20,16 +20,16 @@ class ContactListViewModel @Inject constructor(
         repoUseCases.loadContacts(false)
     }
 
-    override fun getContacts(): Flowable<List<String>> {
+    override fun getContacts(): Flowable<List<Contact>> {
         return repoUseCases.getContacts()
     }
 
-    override fun getContactsState(): Flowable<ContactsState> {
-        return repoUseCases.getContactsState()
+    override fun getContactsState(): Flowable<DataState> {
+        return repoUseCases.getDataState()
     }
 
     override fun inputTextChanged(text: String) {
-        repoUseCases.setContactsPrefix(text.toLowerCase())
+        repoUseCases.findContacts(text.toLowerCase())
     }
 
     override fun contactSelected(contactId: String, fragmentManager: FragmentManager) {

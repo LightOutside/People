@@ -2,7 +2,7 @@ package com.olizuro.repo.domain
 
 import io.reactivex.Flowable
 import o.lizuro.core.entities.Contact
-import o.lizuro.core.entities.ContactsState
+import o.lizuro.core.entities.DataState
 import o.lizuro.core.repo.IRepoUseCases
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -16,19 +16,20 @@ class RepoUseCasesImpl @Inject constructor(
         repository.loadContacts(forceRefresh)
     }
 
-    override fun setContactsPrefix(prefix: String) {
-        repository.setContactsPrefix(prefix)
+    override fun findContacts(pattern: String) {
+        repository.findContacts(pattern)
     }
 
-    override fun getContactsState(): Flowable<ContactsState> {
-        return repository.contactsState
+
+    override fun getDataState(): Flowable<DataState> {
+        return repository.dataState
     }
 
-    override fun getContact(id: String): Contact {
+    override fun getContact(id: String): Flowable<Contact> {
         return repository.getContact(id)
     }
 
-    override fun getContacts(): Flowable<List<String>> {
+    override fun getContacts(): Flowable<List<Contact>> {
         return repository.contacts
     }
 }

@@ -1,6 +1,6 @@
 package o.lizuro.core.entities
 
-enum class ContactsState {
+enum class DataState {
     LOADING,
     LOADED
 }

@@ -5,21 +5,25 @@ import o.lizuro.core.IApp
 import o.lizuro.core.entities.Contact
 import o.lizuro.core.entities.EducationPeriod
 import o.lizuro.core.entities.Temperament
-import java.lang.Exception
 import javax.inject.Inject
 
 class LocalDataSourceImpl @Inject constructor(
     app: IApp
 ) : ILocalDataSource {
+
     private val db : AppDatabase = Room.databaseBuilder(app.getApplicationContext(), AppDatabase::class.java, "People").build()
+
+    override fun getContact(id: String): Contact {
+        return db.dao().getContact(id).toContact()
+    }
 
     override fun setContacts(contacts: List<Contact>) {
         db.dao().dropContacts()
         db.dao().setContacts(contacts.map { it.toContactDb() })
     }
 
-    override fun getContacts(): List<Contact> {
-        return db.dao().getContacts().map { it.toContact() }
+    override fun findContacts(pattern: String): List<Contact> {
+        return db.dao().findContacts("$pattern%").map { it.toContact() }
     }
 }
 
@@ -32,6 +36,7 @@ abstract class AppDatabase : RoomDatabase() {
 data class ContactDb(
     @PrimaryKey val id: String,
     @ColumnInfo(name = "name") val name: String,
+    @ColumnInfo(name = "surname") val surname: String,
     @ColumnInfo(name = "phone") val phone: String,
     @ColumnInfo(name = "height") val height: Float,
     @ColumnInfo(name = "biography") val biography: String,
@@ -42,8 +47,11 @@ data class ContactDb(
 
 @Dao
 interface ContactsDao {
-    @Query("SELECT * FROM contactdb")
-    fun getContacts(): List<ContactDb>
+    @Query("SELECT * FROM contactdb WHERE id = :id")
+    fun getContact(id: String): ContactDb
+
+    @Query("SELECT * FROM contactdb WHERE name LIKE :pattern OR surname LIKE :pattern OR phone LIKE :pattern")
+    fun findContacts(pattern: String): List<ContactDb>
 
     @Insert
     fun setContacts(contacts: List<ContactDb>)
@@ -53,9 +61,11 @@ interface ContactsDao {
 }
 
 fun Contact.toContactDb() : ContactDb {
+    val (name, surname) = this.name.split(" ")
     return ContactDb(
         this.id,
-        this.name,
+        name,
+        surname,
         this.phone,
         this.height,
         this.biography,
@@ -68,7 +78,7 @@ fun Contact.toContactDb() : ContactDb {
 fun ContactDb.toContact() : Contact {
     return Contact(
         this.id,
-        this.name,
+        "${this.name} ${this.surname}",
         this.phone,
         this.height,
         this.biography,
