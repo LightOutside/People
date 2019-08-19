@@ -24,7 +24,7 @@ class ContactListViewModel @Inject constructor(
     private val inputProcessor = BehaviorProcessor.createDefault("")
 
     override val contacts: Flowable<List<Contact>>
-        get() = inputProcessor.flatMap {
+        get() = inputProcessor.switchMap {
             repoUseCases.findContacts(it.toLowerCase())
         }
 

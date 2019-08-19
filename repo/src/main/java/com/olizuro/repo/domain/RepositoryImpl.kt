@@ -31,7 +31,6 @@ class RepositoryImpl @Inject constructor(
         errorHandler.handleError(exception)
     }
 
-    //override val contacts: BehaviorProcessor<List<Contact>> = BehaviorProcessor.createDefault(listOf())
     private val dataState: BehaviorProcessor<DataState> = BehaviorProcessor.createDefault(DataState.LOADING)
 
     override fun loadContacts(forceRefresh: Boolean) {
@@ -43,21 +42,16 @@ class RepositoryImpl @Inject constructor(
             if (currentTime - dataTimestamp > DATA_TTL || forceRefresh) {
                 if (networkChecker.isOnline()) {
                     dataState.onNext(DataState.LOADING)
-                    //dropContacts()
+
                     val contactsFromGithub = networkDataSource.getContacts()
                     preferences.saveLong(PREFERENCE_KEY_DATA_TIMESTAMP, System.currentTimeMillis())
                     localDataSource.setContacts(contactsFromGithub)
-                    //initContacts(contactsFromGithub)
+                    
                     dataState.onNext(DataState.LOADED)
                 } else {
                     errorHandler.notifyError("Нет подключения к сети")
                 }
             }
-            //} else {
-            //dropContacts()
-            //val contactsFromDatabase = localDataSource.findContacts("")
-            //initContacts(contactsFromDatabase)
-            //}
         }
     }
 
@@ -67,27 +61,9 @@ class RepositoryImpl @Inject constructor(
 
     override fun getContact(id: String): Flowable<Contact> {
         return localDataSource.getContact(id)
-//        Flowable.just(id)
-//            .map {
-//                localDataSource.getContact(id)
-//            }
-//            .subscribeOn(Schedulers.io())
     }
 
     override fun findContacts(pattern: String): Flowable<List<Contact>> {
         return localDataSource.findContacts(pattern)
-//        GlobalScope.launch(exceptionHandler) {
-//            contacts.onNext(localDataSource.findContacts(pattern))
-//        }
     }
-
-//    private fun initContacts(contactsList: List<Contact>) {
-//        //contacts.onNext(contactsList)
-//        dataState.onNext(DataState.LOADED)
-//    }
-//
-//    private fun dropContacts() {
-//        //contacts.onNext(listOf())
-//        dataState.onNext(DataState.LOADING)
-//    }
 }
