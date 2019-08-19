@@ -5,12 +5,10 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.widget.AppCompatTextView
-import androidx.appcompat.widget.Toolbar
-import androidx.core.content.ContextCompat
 import com.olizuro.contacts.R
 import com.olizuro.contacts.di.ContactInfoComponent
 import io.reactivex.android.schedulers.AndroidSchedulers
+import kotlinx.android.synthetic.main.fragment_contact_info.*
 import o.lizuro.core.IApp
 import o.lizuro.core.contacts.IContactInfoViewModel
 import o.lizuro.core.tools.IErrorHandler
@@ -41,56 +39,50 @@ class ContactInfoFragment : BaseFragment() {
     @Inject
     lateinit var errorHandler: IErrorHandler
 
-    private lateinit var toolbar: Toolbar
-    private lateinit var name: AppCompatTextView
-    private lateinit var phone: AppCompatTextView
-    private lateinit var temperament: AppCompatTextView
-    private lateinit var educationPeriod: AppCompatTextView
-    private lateinit var biography: AppCompatTextView
-
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.fragment_contact_info, container, false).apply {
-            toolbar = findViewById<Toolbar>(R.id.toolbar).apply {
-                setNavigationIcon(R.drawable.ic_back)
-                setNavigationOnClickListener {
-                    activity?.run {
-                        onBackPressed()
-                    }
+        return inflater.inflate(R.layout.fragment_contact_info, container, false)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        toolbar.apply {
+            setNavigationIcon(R.drawable.ic_back)
+            setNavigationOnClickListener {
+                //TODO Navigation framework
+                activity?.run {
+                    onBackPressed()
                 }
             }
-
-            name = findViewById(R.id.name)
-            phone = findViewById<AppCompatTextView>(R.id.phone).apply {
-                setOnClickListener { viewModel.showDialer(context, text.toString()) }
-            }
-            temperament = findViewById(R.id.temperament)
-            educationPeriod = findViewById(R.id.education_period)
-            biography = findViewById(R.id.biography)
+        }
+        phone.apply {
+            setOnClickListener { viewModel.showDialer(context, phone.text.toString()) }
         }
     }
 
     override fun onStart() {
         super.onStart()
 
-        viewModel.getContact(arguments?.getString(BUNDLE_CONTACT_ID) ?: throw IllegalArgumentException("Missing [contactId] argument for ContactInfoFragment"))
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe(
-                {
-                    name.text = it.name
-                    phone.text = it.phone
-                    temperament.text = it.temperament.value.capitalize()
+        arguments?.getString(BUNDLE_CONTACT_ID)?.let { id ->
+            viewModel.getContact(id)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                    {
+                        name.text = it.name
+                        phone.text = it.phone
+                        temperament.text = it.temperament.value.capitalize()
 
-                    val parser = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss")
-                    val formatter = SimpleDateFormat("dd.MM.yyyy")
-                    educationPeriod.text =
-                        "${formatter.format(parser.parse(it.educationPeriod.start))} - ${formatter.format(parser.parse(it.educationPeriod.end))}"
+                        val parser = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss")
+                        val formatter = SimpleDateFormat("dd.MM.yyyy")
+                        education_period.text =
+                            "${formatter.format(parser.parse(it.educationPeriod.start))} - ${formatter.format(parser.parse(it.educationPeriod.end))}"
 
-                    biography.text = it.biography
-                },
-                {
-                    errorHandler.handleError(it)
-                }
-            ).storeToComposite(onStartSubscriptions)
+                        biography.text = it.biography
+                    },
+                    {
+                        errorHandler.handleError(it)
+                    }
+                ).storeToComposite(onStartSubscriptions)
+        }
     }
 
     override fun onAttach(context: Context) {

@@ -8,15 +8,13 @@ import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.view.ViewGroup
-import android.widget.ProgressBar
 import androidx.appcompat.widget.AppCompatTextView
-import androidx.appcompat.widget.SearchView
 import androidx.recyclerview.widget.*
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.jakewharton.rxbinding3.appcompat.queryTextChanges
 import com.olizuro.contacts.R
 import com.olizuro.contacts.di.ContactListComponent
 import io.reactivex.android.schedulers.AndroidSchedulers
+import kotlinx.android.synthetic.main.fragment_contact_list.*
 import o.lizuro.core.IApp
 import o.lizuro.core.contacts.IContactListViewModel
 import o.lizuro.core.entities.Contact
@@ -50,40 +48,33 @@ class ContactListFragment : BaseFragment() {
     @Inject
     lateinit var errorHandler: IErrorHandler
 
-    private lateinit var input: SearchView
-    private lateinit var pullToRefresh: SwipeRefreshLayout
-    private lateinit var list: RecyclerView
-    private lateinit var loader: ProgressBar
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.fragment_contact_list, container, false).apply {
-            input = findViewById<SearchView>(R.id.input).apply {
-                setQuery("", false)
-            }
+        return inflater.inflate(R.layout.fragment_contact_list, container, false)
+    }
 
-            pullToRefresh = findViewById<SwipeRefreshLayout>(R.id.pull_to_refresh).apply {
-                setColorSchemeColors(
-                    context.getAttrColor(R.attr.themePrimary)
-                )
-                setOnRefreshListener {
-                    dropListData()
-                    viewModel.pullToRefresh()
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        pull_to_refresh.apply {
+            setColorSchemeColors(
+                context.getAttrColor(R.attr.themePrimary)
+            )
+            setOnRefreshListener {
+                dropListData()
+                viewModel.pullToRefresh()
+            }
+        }
+        list.apply {
+            layoutManager = LinearLayoutManager(context)
+            adapter = ContactsAdapter(context) {
+                activity?.run {
+                    viewModel.contactSelected(it, this.supportFragmentManager)
                 }
             }
-
-            list = findViewById<RecyclerView>(R.id.list).apply {
-                layoutManager = LinearLayoutManager(context)
-                adapter = ContactsAdapter(context) {
-                    activity?.run {
-                        viewModel.contactSelected(it, this.supportFragmentManager)
-                    }
-                }
-                addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
-            }
-
-            loader = findViewById<ProgressBar>(R.id.loader).apply {
-                indeterminateDrawable.setColorFilter(context.getAttrColor(R.attr.themePrimary), PorterDuff.Mode.SRC_IN)
-            }
+            addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
+        }
+        loader.apply {
+            indeterminateDrawable.setColorFilter(context.getAttrColor(R.attr.themePrimary), PorterDuff.Mode.SRC_IN)
         }
     }
 
@@ -118,7 +109,7 @@ class ContactListFragment : BaseFragment() {
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(
                 {
-                    pullToRefresh.isRefreshing = false
+                    pull_to_refresh.isRefreshing = false
 
                     when (it) {
                         DataState.LOADING -> {

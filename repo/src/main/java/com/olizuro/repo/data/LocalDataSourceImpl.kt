@@ -16,7 +16,7 @@ class LocalDataSourceImpl @Inject constructor(
         Room.databaseBuilder(app.getApplicationContext(), AppDatabase::class.java, "People").build()
 
     override fun getContact(id: String): Flowable<Contact> {
-        return db.dao().getContact(id).map { it.toContact() }
+        return db.dao().getContact(id).distinctUntilChanged().map { it.toContact() }
     }
 
     override fun setContacts(contacts: List<Contact>) {
@@ -25,7 +25,7 @@ class LocalDataSourceImpl @Inject constructor(
     }
 
     override fun findContacts(pattern: String): Flowable<List<Contact>> {
-        return db.dao().findContacts("$pattern%").map { list -> list.map { it.toContact() } }
+        return db.dao().findContacts("$pattern%").distinctUntilChanged().map { list -> list.map { it.toContact() } }
     }
 }
 
@@ -36,15 +36,24 @@ abstract class AppDatabase : RoomDatabase() {
 
 @Entity
 data class ContactDb(
-    @PrimaryKey val id: String,
-    @ColumnInfo(name = "name") val name: String,
-    @ColumnInfo(name = "surname") val surname: String,
-    @ColumnInfo(name = "phone") val phone: String,
-    @ColumnInfo(name = "height") val height: Float,
-    @ColumnInfo(name = "biography") val biography: String,
-    @ColumnInfo(name = "temperament") val temperament: String,
-    @ColumnInfo(name = "education_start") val educationStart: String,
-    @ColumnInfo(name = "education_end") val educationEnd: String
+    @PrimaryKey
+    val id: String,
+    @ColumnInfo(name = "name")
+    val name: String,
+    @ColumnInfo(name = "surname")
+    val surname: String,
+    @ColumnInfo(name = "phone")
+    val phone: String,
+    @ColumnInfo(name = "height")
+    val height: Float,
+    @ColumnInfo(name = "biography")
+    val biography: String,
+    @ColumnInfo(name = "temperament")
+    val temperament: String,
+    @ColumnInfo(name = "education_start")
+    val educationStart: String,
+    @ColumnInfo(name = "education_end")
+    val educationEnd: String
 )
 
 @Dao

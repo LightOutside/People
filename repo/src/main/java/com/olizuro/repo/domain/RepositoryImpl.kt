@@ -46,7 +46,7 @@ class RepositoryImpl @Inject constructor(
                     val contactsFromGithub = networkDataSource.getContacts()
                     preferences.saveLong(PREFERENCE_KEY_DATA_TIMESTAMP, System.currentTimeMillis())
                     localDataSource.setContacts(contactsFromGithub)
-                    
+
                     dataState.onNext(DataState.LOADED)
                 } else {
                     errorHandler.notifyError("Нет подключения к сети")
