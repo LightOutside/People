@@ -1,9 +1,11 @@
 package com.olizuro.repo.data
 
+import io.reactivex.Flowable
 import o.lizuro.core.entities.Contact
 
 interface ILocalDataSource {
-    fun getContact(id: String) : Contact
-    fun findContacts(pattern: String): List<Contact>
     fun setContacts(contacts: List<Contact>)
+
+    fun getContact(id: String) : Flowable<Contact>
+    fun findContacts(pattern: String): Flowable<List<Contact>>
 }

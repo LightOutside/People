@@ -6,9 +6,8 @@ import o.lizuro.core.entities.DataState
 
 interface IRepoUseCases {
     fun loadContacts(forceRefresh: Boolean)
-    fun findContacts(pattern: String)
 
-    fun getContact(id: String): Flowable<Contact>
-    fun getContacts(): Flowable<List<Contact>>
     fun getDataState(): Flowable<DataState>
+    fun getContact(id: String): Flowable<Contact>
+    fun findContacts(pattern: String) : Flowable<List<Contact>>
 }

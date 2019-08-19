@@ -16,20 +16,16 @@ class RepoUseCasesImpl @Inject constructor(
         repository.loadContacts(forceRefresh)
     }
 
-    override fun findContacts(pattern: String) {
-        repository.findContacts(pattern)
+
+    override fun findContacts(pattern: String) : Flowable<List<Contact>> {
+        return repository.findContacts(pattern)
     }
 
-
     override fun getDataState(): Flowable<DataState> {
-        return repository.dataState
+        return repository.getDataState()
     }
 
     override fun getContact(id: String): Flowable<Contact> {
         return repository.getContact(id)
-    }
-
-    override fun getContacts(): Flowable<List<Contact>> {
-        return repository.contacts
     }
 }

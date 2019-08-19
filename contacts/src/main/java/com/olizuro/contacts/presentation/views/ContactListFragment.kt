@@ -102,7 +102,7 @@ class ContactListFragment : BaseFragment() {
                 }
             ).storeToComposite(onStartSubscriptions)
 
-        viewModel.getContacts()
+        viewModel.contacts
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(
                 {
@@ -114,7 +114,7 @@ class ContactListFragment : BaseFragment() {
                 }
             ).storeToComposite(onStartSubscriptions)
 
-        viewModel.getContactsState()
+        viewModel.dataState
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(
                 {
@@ -129,8 +129,7 @@ class ContactListFragment : BaseFragment() {
                             list.visibility = VISIBLE
                             loader.visibility = GONE
                         }
-                        else -> { /*do nothing*/
-                        }
+                        else -> { /*do nothing*/ }
                     }
                 },
                 {

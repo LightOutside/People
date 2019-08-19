@@ -4,6 +4,7 @@ import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.ViewModel
 import com.olizuro.contacts.R
 import io.reactivex.Flowable
+import io.reactivex.processors.BehaviorProcessor
 import o.lizuro.core.contacts.IContactListViewModel
 import o.lizuro.core.contacts.IContactsUseCases
 import o.lizuro.core.entities.Contact
@@ -20,16 +21,19 @@ class ContactListViewModel @Inject constructor(
         repoUseCases.loadContacts(false)
     }
 
-    override fun getContacts(): Flowable<List<Contact>> {
-        return repoUseCases.getContacts()
-    }
+    private val inputProcessor = BehaviorProcessor.createDefault("")
 
-    override fun getContactsState(): Flowable<DataState> {
-        return repoUseCases.getDataState()
-    }
+    override val contacts: Flowable<List<Contact>>
+        get() = inputProcessor.flatMap {
+            repoUseCases.findContacts(it.toLowerCase())
+        }
+
+    override val dataState: Flowable<DataState>
+        get() = repoUseCases.getDataState()
+
 
     override fun inputTextChanged(text: String) {
-        repoUseCases.findContacts(text.toLowerCase())
+        inputProcessor.onNext(text)
     }
 
     override fun contactSelected(contactId: String, fragmentManager: FragmentManager) {
