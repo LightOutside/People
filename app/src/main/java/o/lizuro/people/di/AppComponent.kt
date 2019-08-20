@@ -1,8 +1,8 @@
 package o.lizuro.people.di
 
-import com.olizuro.contacts.di.ContactsUseCasesComponent
-import com.olizuro.repo.di.RepoComponent
+import com.olizuro.contacts.di.ContactsComponent
 import dagger.Component
+import dagger.android.support.AndroidSupportInjectionModule
 import o.lizuro.core.di.*
 import o.lizuro.people.PeopleApplication
 import javax.inject.Singleton
@@ -11,9 +11,11 @@ import javax.inject.Singleton
 @Component(
     dependencies = [
         IToolsProvider::class,
-        IRepoProvider::class,
-        IContactsProvider::class,
-        IViewModelFactoryProvider::class
+        IContactsProvider::class
+    ],
+    modules = [
+        AndroidSupportInjectionModule::class,
+        AppModule::class
     ]
 )
 interface AppComponent : IApplicationProvider {
@@ -26,17 +28,14 @@ interface AppComponent : IApplicationProvider {
             fun init(app: PeopleApplication): AppComponent {
 
                 val toolsProvider = ToolsComponent.Initializer.init(app)
-                val repoProvider = RepoComponent.Initializer.init(toolsProvider)
-                val contactsProvider = ContactsUseCasesComponent.Initializer.init()
-                val viewModelFactoryProvider = ViewModelFactoryComponent.Initializer.init(repoProvider, contactsProvider, toolsProvider)
+                val contactsProvider = ContactsComponent.Initializer.init(toolsProvider)
 
                 return DaggerAppComponent.builder()
                     .iToolsProvider(toolsProvider)
-                    .iRepoProvider(repoProvider)
                     .iContactsProvider(contactsProvider)
-                    .iViewModelFactoryProvider(viewModelFactoryProvider)
                     .build()
             }
         }
     }
 }
+

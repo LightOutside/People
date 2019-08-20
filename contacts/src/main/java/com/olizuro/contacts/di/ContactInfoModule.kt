@@ -1,5 +1,6 @@
 package com.olizuro.contacts.di
 
+import android.os.Bundle
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import com.olizuro.contacts.presentation.viewmodels.ContactInfoViewModel
@@ -9,23 +10,18 @@ import dagger.Module
 import dagger.Provides
 import dagger.android.ContributesAndroidInjector
 import o.lizuro.core.contacts.IContactInfoViewModel
+import o.lizuro.utils.di.general.ViewModelFactory
 
 @Module
-abstract class ContactInfoModule {
-    @Module
-    companion object {
-        @Provides
-        fun providesIContactListViewModel(
-            fragment: ContactInfoFragment,
-            factory: ViewModelProvider.Factory
-        ): ContactInfoViewModel {
-            return ViewModelProviders.of(fragment, factory)[ContactInfoViewModel::class.java]
-        }
+class ContactInfoModule {
+    @Provides
+    fun provideViewModelInterface(
+        fragment: ContactInfoFragment,
+        factory: ViewModelFactory<ContactInfoViewModel>
+    ): IContactInfoViewModel {
+        return ViewModelProviders.of(fragment, factory).get(ContactInfoViewModel::class.java)
     }
 
-    @Binds
-    abstract fun bindsIContactInfoViewModel(viewModel: ContactInfoViewModel): IContactInfoViewModel
-
-    @ContributesAndroidInjector
-    abstract fun bindsContactInfoFragment(): ContactInfoFragment
+    @Provides
+    fun provideFragmentArguments(fragment: ContactInfoFragment): Bundle = fragment.arguments ?: Bundle()
 }

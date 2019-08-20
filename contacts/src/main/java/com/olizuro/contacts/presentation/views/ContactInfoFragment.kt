@@ -6,7 +6,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.olizuro.contacts.R
-import com.olizuro.contacts.di.ContactInfoComponent
 import io.reactivex.android.schedulers.AndroidSchedulers
 import kotlinx.android.synthetic.main.fragment_contact_info.*
 import o.lizuro.core.IApp
@@ -17,7 +16,7 @@ import o.lizuro.utils.rx.storeToComposite
 import java.text.SimpleDateFormat
 import javax.inject.Inject
 
-class ContactInfoFragment : BaseFragment() {
+class ContactInfoFragment : BaseFragment<IContactInfoViewModel>() {
 
     companion object {
         const val TAG = "com.olizuro.contacts.presentation.views.ContactInfoFragment"
@@ -33,8 +32,8 @@ class ContactInfoFragment : BaseFragment() {
         }
     }
 
-    @Inject
-    lateinit var viewModel: IContactInfoViewModel
+//    @Inject
+//    lateinit var viewModel: IContactInfoViewModel
 
     @Inject
     lateinit var errorHandler: IErrorHandler
@@ -85,12 +84,12 @@ class ContactInfoFragment : BaseFragment() {
         }
     }
 
-    override fun onAttach(context: Context) {
-        activity?.let {
-            ContactInfoComponent.Initializer
-                .init((it.applicationContext as IApp).getAppComponent())
-                .inject(this)
-        }
-        super.onAttach(context)
-    }
+//    override fun onAttach(context: Context) {
+//        activity?.let {
+//            ContactInfoComponent.Initializer
+//                .init((it.applicationContext as IApp).getAppComponent())
+//                .inject(this)
+//        }
+//        super.onAttach(context)
+//    }
 }

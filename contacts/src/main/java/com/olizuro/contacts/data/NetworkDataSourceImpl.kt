@@ -1,4 +1,4 @@
-package com.olizuro.repo.data
+package com.olizuro.contacts.data
 
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken

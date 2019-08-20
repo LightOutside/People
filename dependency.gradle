@@ -11,6 +11,7 @@ ext.versions = [
         //android lib
         supportLibrary      : "27.1.1",
         constraintLayout    : "1.1.3",
+        recyclerView        : "1.0.0",
         kotlin              : "1.3.41",
         kotlinCoroutines    : "1.3.0-RC",
         googleServices      : "4.3.0",
@@ -41,7 +42,6 @@ ext.local = [
         utils           : project(':utils'),
         core            : project(':core'),
         coreui          : project(':coreui'),
-        repo            : project(':repo'),
         mainscreen      : project(':mainscreen'),
         contacts        : project(':contacts')
 ]
@@ -54,6 +54,7 @@ ext.kotlinLibs = [
 
 ext.androidx = [
         constraint_layout           : "androidx.constraintlayout:constraintlayout:$versions.constraintLayout",
+        recycler                    : "androidx.recyclerview:recyclerview:$versions.recyclerView",
         lifecycle                   : "androidx.lifecycle:lifecycle-extensions:$versions.lifecycle",
         material                    : "com.google.android.material:material:1.0.0-rc01"
 ]

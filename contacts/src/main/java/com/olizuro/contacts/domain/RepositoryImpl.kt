@@ -1,7 +1,5 @@
-package com.olizuro.repo.domain
+package com.olizuro.contacts.domain
 
-import com.olizuro.repo.data.ILocalDataSource
-import com.olizuro.repo.data.INetworkDataSource
 import io.reactivex.Flowable
 import io.reactivex.processors.BehaviorProcessor
 import kotlinx.coroutines.CoroutineExceptionHandler
@@ -18,8 +16,8 @@ class RepositoryImpl @Inject constructor(
     private val preferences: IPreferences,
     private val networkChecker: INetworkChecker,
     private val errorHandler: IErrorHandler,
-    private val localDataSource: ILocalDataSource,
-    private val networkDataSource: INetworkDataSource
+    private val localDataSource: com.olizuro.contacts.data.ILocalDataSource,
+    private val networkDataSource: com.olizuro.contacts.data.INetworkDataSource
 ) : IRepository {
 
     companion object {
@@ -29,6 +27,7 @@ class RepositoryImpl @Inject constructor(
 
     private val exceptionHandler = CoroutineExceptionHandler { _, exception ->
         errorHandler.handleError(exception)
+        dataState.onNext(DataState.LOADED)
     }
 
     private val dataState: BehaviorProcessor<DataState> = BehaviorProcessor.createDefault(DataState.LOADING)
@@ -40,17 +39,15 @@ class RepositoryImpl @Inject constructor(
             val dataTimestamp = preferences.loadLong(PREFERENCE_KEY_DATA_TIMESTAMP, 0L)
 
             if (currentTime - dataTimestamp > DATA_TTL || forceRefresh) {
+                dataState.onNext(DataState.LOADING)
                 if (networkChecker.isOnline()) {
-                    dataState.onNext(DataState.LOADING)
-
                     val contactsFromGithub = networkDataSource.getContacts()
                     preferences.saveLong(PREFERENCE_KEY_DATA_TIMESTAMP, System.currentTimeMillis())
                     localDataSource.setContacts(contactsFromGithub)
-
-                    dataState.onNext(DataState.LOADED)
                 } else {
                     errorHandler.notifyError("Нет подключения к сети")
                 }
+                dataState.onNext(DataState.LOADED)
             }
         }
     }

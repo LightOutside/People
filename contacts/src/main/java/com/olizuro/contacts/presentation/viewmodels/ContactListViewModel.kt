@@ -9,27 +9,25 @@ import o.lizuro.core.contacts.IContactListViewModel
 import o.lizuro.core.contacts.IContactsUseCases
 import o.lizuro.core.entities.Contact
 import o.lizuro.core.entities.DataState
-import o.lizuro.core.repo.IRepoUseCases
 import javax.inject.Inject
 
 class ContactListViewModel @Inject constructor(
-    private var repoUseCases: IRepoUseCases,
     private var contactsUseCases: IContactsUseCases
 ) : ViewModel(), IContactListViewModel {
 
     init {
-        repoUseCases.loadContacts(false)
+        contactsUseCases.loadContacts(false)
     }
 
     private val inputProcessor = BehaviorProcessor.createDefault("")
 
     override val contacts: Flowable<List<Contact>>
         get() = inputProcessor.switchMap {
-            repoUseCases.findContacts(it.toLowerCase())
+            contactsUseCases.findContacts(it.toLowerCase())
         }
 
     override val dataState: Flowable<DataState>
-        get() = repoUseCases.getDataState()
+        get() = contactsUseCases.getDataState()
 
 
     override fun inputTextChanged(text: String) {
@@ -37,10 +35,11 @@ class ContactListViewModel @Inject constructor(
     }
 
     override fun contactSelected(contactId: String, fragmentManager: FragmentManager) {
+        //TODO Navigation framework
         contactsUseCases.showContactInfo(fragmentManager, R.id.content, true, contactId)
     }
 
     override fun pullToRefresh() {
-        repoUseCases.loadContacts(true)
+        contactsUseCases.loadContacts(true)
     }
 }

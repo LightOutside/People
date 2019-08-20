@@ -30,8 +30,8 @@ android {
 
 dependencies {
     implementation local.core
+    implementation local.coreui
     implementation local.utils
-    implementation local.repo
     implementation local.mainscreen
     implementation local.contacts
 

@@ -1,4 +1,4 @@
-package com.olizuro.repo.domain
+package com.olizuro.contacts.domain
 
 import io.reactivex.Flowable
 import io.reactivex.Maybe

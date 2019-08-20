@@ -1,4 +1,4 @@
-package com.olizuro.repo.data
+package com.olizuro.contacts.data
 
 import androidx.room.*
 import io.reactivex.Flowable
@@ -25,7 +25,7 @@ class LocalDataSourceImpl @Inject constructor(
     }
 
     override fun findContacts(pattern: String): Flowable<List<Contact>> {
-        return db.dao().findContacts("$pattern%").distinctUntilChanged().map { list -> list.map { it.toContact() } }
+        return db.dao().findContacts("%$pattern%").distinctUntilChanged().map { list -> list.map { it.toContact() } }
     }
 }
 
@@ -40,8 +40,6 @@ data class ContactDb(
     val id: String,
     @ColumnInfo(name = "name")
     val name: String,
-    @ColumnInfo(name = "surname")
-    val surname: String,
     @ColumnInfo(name = "phone")
     val phone: String,
     @ColumnInfo(name = "height")
@@ -67,16 +65,14 @@ interface ContactsDao {
     @Query("SELECT * FROM contactdb WHERE id = :id")
     fun getContact(id: String): Flowable<ContactDb>
 
-    @Query("SELECT * FROM contactdb WHERE name LIKE :pattern OR surname LIKE :pattern OR phone LIKE :pattern")
+    @Query("SELECT * FROM contactdb WHERE name LIKE :pattern OR phone LIKE :pattern")
     fun findContacts(pattern: String): Flowable<List<ContactDb>>
 }
 
 fun Contact.toContactDb(): ContactDb {
-    val (name, surname) = this.name.split(" ")
     return ContactDb(
         this.id,
-        name,
-        surname,
+        this.name,
         this.phone,
         this.height,
         this.biography,
@@ -89,7 +85,7 @@ fun Contact.toContactDb(): ContactDb {
 fun ContactDb.toContact(): Contact {
     return Contact(
         this.id,
-        "${this.name} ${this.surname}",
+        this.name,
         this.phone,
         this.height,
         this.biography,

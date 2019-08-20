@@ -1,11 +1,22 @@
 package o.lizuro.coreui.views
 
+import android.content.Context
 import androidx.fragment.app.Fragment
+import dagger.android.support.AndroidSupportInjection
 import io.reactivex.disposables.CompositeDisposable
+import javax.inject.Inject
 
-open class BaseFragment : Fragment() {
+open class BaseFragment<V : Any> : Fragment() {
+    @Inject
+    lateinit var viewModel: V
+
     protected val onStartSubscriptions = CompositeDisposable()
     protected val onCreateSubscriptions = CompositeDisposable()
+
+    override fun onAttach(context: Context?) {
+        AndroidSupportInjection.inject(this)
+        super.onAttach(context)
+    }
 
     override fun onStop() {
         super.onStop()

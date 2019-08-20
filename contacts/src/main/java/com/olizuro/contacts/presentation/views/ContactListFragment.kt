@@ -12,14 +12,12 @@ import androidx.appcompat.widget.AppCompatTextView
 import androidx.recyclerview.widget.*
 import com.jakewharton.rxbinding3.appcompat.queryTextChanges
 import com.olizuro.contacts.R
-import com.olizuro.contacts.di.ContactListComponent
 import io.reactivex.android.schedulers.AndroidSchedulers
 import kotlinx.android.synthetic.main.fragment_contact_list.*
-import o.lizuro.core.IApp
 import o.lizuro.core.contacts.IContactListViewModel
+import o.lizuro.core.contacts.IContactsUseCases
 import o.lizuro.core.entities.Contact
 import o.lizuro.core.entities.DataState
-import o.lizuro.core.repo.IRepoUseCases
 import o.lizuro.core.tools.IErrorHandler
 import o.lizuro.coreui.views.BaseFragment
 import o.lizuro.utils.context.getAttrColor
@@ -27,12 +25,12 @@ import o.lizuro.utils.rx.storeToComposite
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
-class ContactListFragment : BaseFragment() {
+class ContactListFragment : BaseFragment<IContactListViewModel>() {
 
     companion object {
         const val TAG = "com.olizuro.contacts.presentation.views.ContactListFragment"
 
-        private const val INPUT_DEBOUNCE = 500L //ms
+        private const val INPUT_DEBOUNCE = 300L //ms
 
         fun create(): ContactListFragment {
             return ContactListFragment()
@@ -40,11 +38,7 @@ class ContactListFragment : BaseFragment() {
     }
 
     @Inject
-    lateinit var viewModel: IContactListViewModel
-
-    @Inject
-    lateinit var repoUseCases: IRepoUseCases
-
+    lateinit var contactsUseCases: IContactsUseCases
     @Inject
     lateinit var errorHandler: IErrorHandler
 
@@ -60,7 +54,7 @@ class ContactListFragment : BaseFragment() {
                 context.getAttrColor(R.attr.themePrimary)
             )
             setOnRefreshListener {
-                dropListData()
+                //dropListData()
                 viewModel.pullToRefresh()
             }
         }
@@ -127,15 +121,6 @@ class ContactListFragment : BaseFragment() {
                     errorHandler.handleError(it)
                 }
             ).storeToComposite(onStartSubscriptions)
-    }
-
-    override fun onAttach(context: Context) {
-        activity?.let {
-            ContactListComponent.Initializer
-                .init((it.applicationContext as IApp).getAppComponent())
-                .inject(this)
-        }
-        super.onAttach(context)
     }
 
     private fun dropListData() {

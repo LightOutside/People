@@ -6,20 +6,19 @@ import android.content.pm.PackageManager
 import android.net.Uri
 import androidx.lifecycle.ViewModel
 import io.reactivex.Flowable
-import io.reactivex.processors.BehaviorProcessor
 import o.lizuro.core.contacts.IContactInfoViewModel
+import o.lizuro.core.contacts.IContactsUseCases
 import o.lizuro.core.entities.Contact
-import o.lizuro.core.repo.IRepoUseCases
 import o.lizuro.core.tools.IErrorHandler
 import javax.inject.Inject
 
 class ContactInfoViewModel @Inject constructor(
     private var errorHandler: IErrorHandler,
-    private var repoUseCases: IRepoUseCases
+    private var contactsUseCases: IContactsUseCases
 ) : ViewModel(), IContactInfoViewModel {
 
     override fun getContact(id: String): Flowable<Contact> {
-        return repoUseCases.getContact(id)
+        return contactsUseCases.getContact(id)
     }
 
     override fun showDialer(context: Context, phone: String) {
