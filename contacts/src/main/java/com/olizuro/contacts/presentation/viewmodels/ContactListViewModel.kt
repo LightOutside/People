@@ -1,8 +1,6 @@
 package com.olizuro.contacts.presentation.viewmodels
 
-import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.ViewModel
-import com.olizuro.contacts.R
 import io.reactivex.Flowable
 import io.reactivex.processors.BehaviorProcessor
 import o.lizuro.core.contacts.IContactListViewModel
@@ -32,11 +30,6 @@ class ContactListViewModel @Inject constructor(
 
     override fun inputTextChanged(text: String) {
         inputProcessor.onNext(text)
-    }
-
-    override fun contactSelected(contactId: String, fragmentManager: FragmentManager) {
-        //TODO Navigation framework
-        contactsUseCases.showContactInfo(fragmentManager, R.id.content, true, contactId)
     }
 
     override fun pullToRefresh() {

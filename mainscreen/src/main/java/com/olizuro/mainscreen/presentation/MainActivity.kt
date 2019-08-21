@@ -42,7 +42,7 @@ class MainActivity : AppCompatActivity(), HasSupportFragmentInjector {
 
         setupErrorHandler()
 
-        contactsUseCases.showContactsList(supportFragmentManager, R.id.content, false)
+        //contactsUseCases.showContactsList(supportFragmentManager, R.id.content, false)
     }
 
     override fun onDestroy() {

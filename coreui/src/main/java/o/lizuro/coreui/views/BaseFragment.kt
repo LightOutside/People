@@ -13,7 +13,7 @@ open class BaseFragment<V : Any> : Fragment() {
     protected val onStartSubscriptions = CompositeDisposable()
     protected val onCreateSubscriptions = CompositeDisposable()
 
-    override fun onAttach(context: Context?) {
+    override fun onAttach(context: Context) {
         AndroidSupportInjection.inject(this)
         super.onAttach(context)
     }

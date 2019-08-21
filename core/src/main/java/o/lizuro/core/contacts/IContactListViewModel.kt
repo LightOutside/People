@@ -10,6 +10,6 @@ interface IContactListViewModel {
     val dataState: Flowable<DataState>
 
     fun inputTextChanged(text: String)
-    fun contactSelected(contactId: String, fragmentManager: FragmentManager)
+    //fun contactSelected(contactId: String, fragmentManager: FragmentManager)
     fun pullToRefresh()
 }

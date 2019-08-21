@@ -26,6 +26,11 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+
+    compileOptions {
+        sourceCompatibility = 1.8
+        targetCompatibility = 1.8
+    }
 }
 
 dependencies {
@@ -40,5 +45,6 @@ dependencies {
     implementation kotlinLibs.values()
     implementation rxjava.values()
     implementation dagger.values()
+    implementation cicerone.values()
     kapt daggerKapt.values()
 }

@@ -12,6 +12,6 @@ interface IContactsUseCases {
     fun getContact(id: String): Flowable<Contact>
     fun findContacts(pattern: String) : Flowable<List<Contact>>
 
-    fun showContactsList(fragmentManager: FragmentManager, containerId: Int, backStack: Boolean)
-    fun showContactInfo(fragmentManager: FragmentManager, containerId: Int, backStack: Boolean, contactId: String)
+//    fun showContactsList(fragmentManager: FragmentManager, containerId: Int, backStack: Boolean)
+//    fun showContactInfo(fragmentManager: FragmentManager, containerId: Int, backStack: Boolean, contactId: String)
 }

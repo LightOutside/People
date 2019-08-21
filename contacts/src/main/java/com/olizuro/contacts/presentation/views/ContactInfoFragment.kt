@@ -1,14 +1,14 @@
 package com.olizuro.contacts.presentation.views
 
-import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import com.olizuro.contacts.R
 import io.reactivex.android.schedulers.AndroidSchedulers
 import kotlinx.android.synthetic.main.fragment_contact_info.*
-import o.lizuro.core.IApp
 import o.lizuro.core.contacts.IContactInfoViewModel
 import o.lizuro.core.tools.IErrorHandler
 import o.lizuro.coreui.views.BaseFragment
@@ -18,27 +18,16 @@ import javax.inject.Inject
 
 class ContactInfoFragment : BaseFragment<IContactInfoViewModel>() {
 
-    companion object {
-        const val TAG = "com.olizuro.contacts.presentation.views.ContactInfoFragment"
-
-        const val BUNDLE_CONTACT_ID = "com.olizuro.contacts.presentation.views.BUNDLE_CONTACT_ID"
-
-        fun create(contactId: String): ContactInfoFragment {
-            return ContactInfoFragment().apply {
-                arguments = Bundle().apply {
-                    putString(BUNDLE_CONTACT_ID, contactId)
-                }
-            }
-        }
-    }
-
-//    @Inject
-//    lateinit var viewModel: IContactInfoViewModel
-
     @Inject
     lateinit var errorHandler: IErrorHandler
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    private val args: ContactInfoFragmentArgs by navArgs()
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         return inflater.inflate(R.layout.fragment_contact_info, container, false)
     }
 
@@ -47,10 +36,7 @@ class ContactInfoFragment : BaseFragment<IContactInfoViewModel>() {
         toolbar.apply {
             setNavigationIcon(R.drawable.ic_back)
             setNavigationOnClickListener {
-                //TODO Navigation framework
-                activity?.run {
-                    onBackPressed()
-                }
+                findNavController().popBackStack()
             }
         }
         phone.apply {
@@ -61,35 +47,30 @@ class ContactInfoFragment : BaseFragment<IContactInfoViewModel>() {
     override fun onStart() {
         super.onStart()
 
-        arguments?.getString(BUNDLE_CONTACT_ID)?.let { id ->
-            viewModel.getContact(id)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(
-                    {
-                        name.text = it.name
-                        phone.text = it.phone
-                        temperament.text = it.temperament.value.capitalize()
+        viewModel.getContact(args.contactId)
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(
+                {
+                    name.text = it.name
+                    phone.text = it.phone
+                    temperament.text = it.temperament.value.capitalize()
 
-                        val parser = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss")
-                        val formatter = SimpleDateFormat("dd.MM.yyyy")
-                        education_period.text =
-                            "${formatter.format(parser.parse(it.educationPeriod.start))} - ${formatter.format(parser.parse(it.educationPeriod.end))}"
+                    val parser = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss")
+                    val formatter = SimpleDateFormat("dd.MM.yyyy")
 
-                        biography.text = it.biography
-                    },
-                    {
-                        errorHandler.handleError(it)
+                    val date1 = parser.parse(it.educationPeriod.start)
+                    val date2 = parser.parse(it.educationPeriod.end)
+                    education_period.text = if(date1 < date2) {
+                        "${formatter.format(date1)} - ${formatter.format(date2)}"
+                    } else {
+                        "${formatter.format(date2)} - ${formatter.format(date1)}"
                     }
-                ).storeToComposite(onStartSubscriptions)
-        }
-    }
 
-//    override fun onAttach(context: Context) {
-//        activity?.let {
-//            ContactInfoComponent.Initializer
-//                .init((it.applicationContext as IApp).getAppComponent())
-//                .inject(this)
-//        }
-//        super.onAttach(context)
-//    }
+                    biography.text = it.biography
+                },
+                {
+                    errorHandler.handleError(it)
+                }
+            ).storeToComposite(onStartSubscriptions)
+    }
 }

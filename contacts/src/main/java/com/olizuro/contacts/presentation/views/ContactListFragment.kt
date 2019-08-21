@@ -9,6 +9,7 @@ import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.view.ViewGroup
 import androidx.appcompat.widget.AppCompatTextView
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.*
 import com.jakewharton.rxbinding3.appcompat.queryTextChanges
 import com.olizuro.contacts.R
@@ -28,20 +29,14 @@ import javax.inject.Inject
 class ContactListFragment : BaseFragment<IContactListViewModel>() {
 
     companion object {
-        const val TAG = "com.olizuro.contacts.presentation.views.ContactListFragment"
-
         private const val INPUT_DEBOUNCE = 300L //ms
-
-        fun create(): ContactListFragment {
-            return ContactListFragment()
-        }
     }
 
     @Inject
     lateinit var contactsUseCases: IContactsUseCases
+
     @Inject
     lateinit var errorHandler: IErrorHandler
-
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_contact_list, container, false)
@@ -54,16 +49,13 @@ class ContactListFragment : BaseFragment<IContactListViewModel>() {
                 context.getAttrColor(R.attr.themePrimary)
             )
             setOnRefreshListener {
-                //dropListData()
                 viewModel.pullToRefresh()
             }
         }
         list.apply {
             layoutManager = LinearLayoutManager(context)
             adapter = ContactsAdapter(context) {
-                activity?.run {
-                    viewModel.contactSelected(it, this.supportFragmentManager)
-                }
+                findNavController().navigate(ContactListFragmentDirections.actionShowContactInfo(it))
             }
             addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
         }

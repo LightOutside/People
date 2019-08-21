@@ -5,9 +5,14 @@ apply plugin: 'kotlin-kapt'
 
 android {
     compileSdkVersion versions.compileVersion
+    compileOptions {
+        sourceCompatibility = 1.8
+        targetCompatibility = 1.8
+    }
 }
 
 dependencies {
     implementation rxjava.values()
     implementation gson.values()
+    implementation cicerone.values()
 }
