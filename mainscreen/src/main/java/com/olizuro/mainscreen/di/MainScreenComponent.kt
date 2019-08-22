@@ -1,20 +1,22 @@
-package com.olizuro.contacts.di
+package com.olizuro.mainscreen.di
 
+import com.olizuro.mainscreen.presentation.views.MainActivity
 import dagger.Component
-import o.lizuro.core.di.IContactsProvider
 import o.lizuro.core.di.IToolsProvider
 import javax.inject.Singleton
 
 @Singleton
 @Component(
     dependencies = [IToolsProvider::class],
-    modules = [ContactsModule::class]
+    modules = [MainScreenModule::class]
 )
-interface ContactsComponent : IContactsProvider {
+interface MainScreenComponent : IMainScreenProvider {
+    fun inject(activity: MainActivity)
+
     class Initializer private constructor() {
         companion object {
-            fun init(toolsProvider: IToolsProvider): IContactsProvider {
-                return DaggerContactsComponent
+            fun init(toolsProvider: IToolsProvider): IMainScreenProvider {
+                return DaggerMainScreenComponent
                     .builder()
                     .iToolsProvider(toolsProvider)
                     .build()

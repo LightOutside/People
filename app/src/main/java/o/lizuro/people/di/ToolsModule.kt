@@ -45,5 +45,12 @@ class ToolsModule {
         fun provideNetworkChecker(app: IApp): INetworkChecker {
             return NetworkCheckerImpl(app.getApplicationContext())
         }
+
+        @JvmStatic
+        @Provides
+        @Singleton
+        fun provideNavigation(): INavigation {
+            return NavigationImpl()
+        }
     }
 }

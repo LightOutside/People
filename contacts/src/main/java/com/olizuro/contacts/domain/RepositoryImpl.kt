@@ -30,7 +30,7 @@ class RepositoryImpl @Inject constructor(
         dataState.onNext(DataState.LOADED)
     }
 
-    private val dataState: BehaviorProcessor<DataState> = BehaviorProcessor.createDefault(DataState.LOADING)
+    private val dataState: BehaviorProcessor<DataState> = BehaviorProcessor.createDefault(DataState.LOADED)
 
     override fun loadContacts(forceRefresh: Boolean) {
         GlobalScope.launch(exceptionHandler) {

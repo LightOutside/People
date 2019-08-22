@@ -13,6 +13,7 @@ interface IToolsProvider {
     fun providePreferences(): IPreferences
     fun provideErrorHandler(): IErrorHandler
     fun provideNetworkChecker(): INetworkChecker
+    fun provideNavigator(): INavigation
 }
 
 interface IContactsProvider {

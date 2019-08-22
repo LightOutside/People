@@ -5,7 +5,7 @@ import com.olizuro.contacts.di.ContactListModule
 import com.olizuro.contacts.presentation.views.ContactInfoFragment
 import com.olizuro.contacts.presentation.views.ContactListFragment
 import com.olizuro.mainscreen.di.MainScreenModule
-import com.olizuro.mainscreen.presentation.MainActivity
+import com.olizuro.mainscreen.presentation.views.MainActivity
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
 import o.lizuro.utils.di.annotations.ActivityScope

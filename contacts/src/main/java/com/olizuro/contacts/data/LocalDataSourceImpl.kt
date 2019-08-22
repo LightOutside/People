@@ -56,7 +56,7 @@ data class ContactDb(
 
 @Dao
 interface ContactsDao {
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun setContacts(contacts: List<ContactDb>)
 
     @Query("DELETE FROM contactdb")

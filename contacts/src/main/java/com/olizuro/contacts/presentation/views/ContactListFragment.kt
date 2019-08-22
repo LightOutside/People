@@ -9,13 +9,12 @@ import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.view.ViewGroup
 import androidx.appcompat.widget.AppCompatTextView
-import androidx.navigation.findNavController
 import androidx.recyclerview.widget.*
 import com.jakewharton.rxbinding3.appcompat.queryTextChanges
 import com.olizuro.contacts.R
 import io.reactivex.android.schedulers.AndroidSchedulers
 import kotlinx.android.synthetic.main.fragment_contact_list.*
-import o.lizuro.core.contacts.IContactListViewModel
+import com.olizuro.contacts.presentation.viewmodels.IContactListViewModel
 import o.lizuro.core.contacts.IContactsUseCases
 import o.lizuro.core.entities.Contact
 import o.lizuro.core.entities.DataState
@@ -29,7 +28,11 @@ import javax.inject.Inject
 class ContactListFragment : BaseFragment<IContactListViewModel>() {
 
     companion object {
-        private const val INPUT_DEBOUNCE = 300L //ms
+        private const val INPUT_DEBOUNCE = 500L //ms
+
+        fun create(): ContactListFragment {
+            return ContactListFragment()
+        }
     }
 
     @Inject
@@ -44,6 +47,7 @@ class ContactListFragment : BaseFragment<IContactListViewModel>() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         pull_to_refresh.apply {
             setColorSchemeColors(
                 context.getAttrColor(R.attr.themePrimary)
@@ -52,38 +56,42 @@ class ContactListFragment : BaseFragment<IContactListViewModel>() {
                 viewModel.pullToRefresh()
             }
         }
+
         list.apply {
             layoutManager = LinearLayoutManager(context)
             adapter = ContactsAdapter(context) {
-                findNavController().navigate(ContactListFragmentDirections.actionShowContactInfo(it))
+                viewModel.navigateToContactInfo(it)
             }
             addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
+
         }
+
         loader.apply {
             indeterminateDrawable.setColorFilter(context.getAttrColor(R.attr.themePrimary), PorterDuff.Mode.SRC_IN)
+        }
+
+        input.apply {
+            queryTextChanges()
+                .debounce(INPUT_DEBOUNCE, TimeUnit.MILLISECONDS)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                    {
+                        viewModel.inputTextChanged(it.toString())
+                    },
+                    {
+                        errorHandler.handleError(it)
+                    }
+                ).storeToComposite(onCreateSubscriptions)
         }
     }
 
     override fun onStart() {
         super.onStart()
 
-        input.queryTextChanges()
-            .debounce(INPUT_DEBOUNCE, TimeUnit.MILLISECONDS)
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe(
-                {
-                    viewModel.inputTextChanged(it.toString())
-                },
-                {
-                    errorHandler.handleError(it)
-                }
-            ).storeToComposite(onStartSubscriptions)
-
         viewModel.contacts
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(
                 {
-                    //dropListData()
                     (list.adapter as ContactsAdapter).submitList(it)
                 },
                 {
@@ -114,11 +122,8 @@ class ContactListFragment : BaseFragment<IContactListViewModel>() {
                 }
             ).storeToComposite(onStartSubscriptions)
     }
-
-    private fun dropListData() {
-        (list.adapter as ContactsAdapter).submitList(null)
-    }
 }
+
 
 private class ContactHolder(
     root: View,
@@ -139,7 +144,7 @@ private class ContactHolder(
 
 private class ContactsDiffUtilsCallback : DiffUtil.ItemCallback<Contact>() {
     override fun areItemsTheSame(oldItem: Contact, newItem: Contact): Boolean {
-        return oldItem == newItem
+        return oldItem.id == newItem.id
     }
 
     override fun areContentsTheSame(oldItem: Contact, newItem: Contact): Boolean {

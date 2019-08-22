@@ -1,6 +1,5 @@
-package o.lizuro.core.contacts
+package com.olizuro.contacts.presentation.viewmodels
 
-import androidx.fragment.app.FragmentManager
 import io.reactivex.Flowable
 import o.lizuro.core.entities.Contact
 import o.lizuro.core.entities.DataState
@@ -10,6 +9,6 @@ interface IContactListViewModel {
     val dataState: Flowable<DataState>
 
     fun inputTextChanged(text: String)
-    //fun contactSelected(contactId: String, fragmentManager: FragmentManager)
+    fun navigateToContactInfo(contactId: String)
     fun pullToRefresh()
 }
