@@ -2,39 +2,23 @@ package o.lizuro.coreui.views
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
+import dagger.android.AndroidInjection
+import dagger.android.DispatchingAndroidInjector
+import dagger.android.support.HasSupportFragmentInjector
 import javax.inject.Inject
 
-open class BaseActivity<V: Any> : AppCompatActivity() {
+open class BaseActivity<V: Any> : AppCompatActivity(), HasSupportFragmentInjector {
+    @Inject
+    lateinit var dispatchingAndroidInjector: DispatchingAndroidInjector<Fragment>
+
     @Inject
     lateinit var viewModel: V
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        AndroidSupportInjection.inject(this)
+        AndroidInjection.inject(this)
         super.onCreate(savedInstanceState)
     }
+
+    override fun supportFragmentInjector() = dispatchingAndroidInjector
 }
-
-/*
-open class BaseFragment<V : Any> : Fragment() {
-    @Inject
-    lateinit var viewModel: V
-
-    protected val onStartSubscriptions = CompositeDisposable()
-    protected val onCreateSubscriptions = CompositeDisposable()
-
-    override fun onAttach(context: Context) {
-        AndroidSupportInjection.inject(this)
-        super.onAttach(context)
-    }
-
-    override fun onStop() {
-        super.onStop()
-        onStartSubscriptions.clear()
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        onCreateSubscriptions.clear()
-    }
-}
- */

@@ -1,6 +1,5 @@
 package com.olizuro.mainscreen.di
 
-import com.olizuro.mainscreen.presentation.views.MainActivity
 import dagger.Component
 import o.lizuro.core.di.IToolsProvider
 import javax.inject.Singleton
@@ -11,8 +10,6 @@ import javax.inject.Singleton
     modules = [MainScreenModule::class]
 )
 interface MainScreenComponent : IMainScreenProvider {
-    fun inject(activity: MainActivity)
-
     class Initializer private constructor() {
         companion object {
             fun init(toolsProvider: IToolsProvider): IMainScreenProvider {

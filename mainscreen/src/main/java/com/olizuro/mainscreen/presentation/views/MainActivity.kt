@@ -7,6 +7,7 @@ import androidx.fragment.app.FragmentTransaction
 import com.google.android.material.snackbar.Snackbar
 
 import com.olizuro.mainscreen.R
+import com.olizuro.mainscreen.presentation.viewmodels.IMainScreenViewModel
 import dagger.android.AndroidInjection
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.support.HasSupportFragmentInjector
@@ -16,6 +17,7 @@ import o.lizuro.core.contacts.IContactsUseCases
 import o.lizuro.core.tools.IErrorHandler
 import o.lizuro.core.tools.ILogger
 import o.lizuro.core.tools.INavigation
+import o.lizuro.coreui.views.BaseActivity
 import o.lizuro.utils.rx.storeToComposite
 import ru.terrakok.cicerone.android.support.SupportAppNavigator
 import ru.terrakok.cicerone.commands.Command
@@ -23,10 +25,10 @@ import ru.terrakok.cicerone.commands.Forward
 import javax.inject.Inject
 
 
-class MainActivity : AppCompatActivity(), HasSupportFragmentInjector {
+class MainActivity : BaseActivity<IMainScreenViewModel>() {
 
-    @Inject
-    lateinit var dispatchingAndroidInjector: DispatchingAndroidInjector<Fragment>
+//    @Inject
+//    lateinit var dispatchingAndroidInjector: DispatchingAndroidInjector<Fragment>
 
     @Inject
     lateinit var contactsUseCases: IContactsUseCases
