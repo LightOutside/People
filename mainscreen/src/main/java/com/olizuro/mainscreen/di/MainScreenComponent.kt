@@ -1,6 +1,7 @@
 package com.olizuro.mainscreen.di
 
 import dagger.Component
+import o.lizuro.core.di.IMainScreenProvider
 import o.lizuro.core.di.IToolsProvider
 import javax.inject.Singleton
 

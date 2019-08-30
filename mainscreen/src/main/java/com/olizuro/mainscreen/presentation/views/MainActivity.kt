@@ -27,9 +27,6 @@ import javax.inject.Inject
 
 class MainActivity : BaseActivity<IMainScreenViewModel>() {
 
-//    @Inject
-//    lateinit var dispatchingAndroidInjector: DispatchingAndroidInjector<Fragment>
-
     @Inject
     lateinit var contactsUseCases: IContactsUseCases
 

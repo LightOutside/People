@@ -4,10 +4,12 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.databinding.DataBindingUtil
 import com.olizuro.contacts.R
+import com.olizuro.contacts.databinding.FragmentContactInfoBindingImpl
+import com.olizuro.contacts.presentation.viewmodels.IContactInfoViewModel
 import io.reactivex.android.schedulers.AndroidSchedulers
 import kotlinx.android.synthetic.main.fragment_contact_info.*
-import com.olizuro.contacts.presentation.viewmodels.IContactInfoViewModel
 import o.lizuro.core.tools.IErrorHandler
 import o.lizuro.coreui.views.BaseFragment
 import o.lizuro.utils.rx.storeToComposite
@@ -16,7 +18,7 @@ import javax.inject.Inject
 
 class ContactInfoFragment : BaseFragment<IContactInfoViewModel>() {
     companion object {
-        private const val BUNDLE_CONTACT_ID = "com.olizuro.contacts.presentation.views.BUNDLE_CONTACT_ID"
+        const val BUNDLE_CONTACT_ID = "com.olizuro.contacts.presentation.views.BUNDLE_CONTACT_ID"
 
         fun create(contactId: String): ContactInfoFragment {
             return ContactInfoFragment().apply {
@@ -35,7 +37,15 @@ class ContactInfoFragment : BaseFragment<IContactInfoViewModel>() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_contact_info, container, false)
+        return DataBindingUtil.inflate<FragmentContactInfoBindingImpl>(
+            inflater,
+            R.layout.fragment_contact_info,
+            container,
+            false
+        ).apply {
+            vm = viewModel
+            lifecycleOwner = this@ContactInfoFragment
+        }.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -45,40 +55,25 @@ class ContactInfoFragment : BaseFragment<IContactInfoViewModel>() {
                 viewModel.navigateBack()
             }
         }
-        phone.apply {
-            setOnClickListener { viewModel.showDialer(context, phone.text.toString()) }
-        }
+//        phone.apply {
+//            setOnClickListener { viewModel.showDialer(context, phone.text.toString()) }
+//        }
     }
 
     override fun onStart() {
         super.onStart()
 
-        arguments?.getString(BUNDLE_CONTACT_ID)?.let { contactId ->
-            viewModel.getContact(contactId)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(
-                    {
-                        name.text = it.name
-                        phone.text = it.phone
-                        temperament.text = it.temperament.value.capitalize()
-
-                        val parser = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss")
-                        val formatter = SimpleDateFormat("dd.MM.yyyy")
-
-                        val date1 = parser.parse(it.educationPeriod.start)
-                        val date2 = parser.parse(it.educationPeriod.end)
-                        education_period.text = if(date1 < date2) {
-                            "${formatter.format(date1)} - ${formatter.format(date2)}"
-                        } else {
-                            "${formatter.format(date2)} - ${formatter.format(date1)}"
-                        }
-
-                        biography.text = it.biography
-                    },
-                    {
-                        errorHandler.handleError(it)
-                    }
-                ).storeToComposite(onStartSubscriptions)
-        }
+//        arguments?.getString(BUNDLE_CONTACT_ID)?.let { contactId ->
+//            viewModel.getContact(contactId)
+//                .observeOn(AndroidSchedulers.mainThread())
+//                .subscribe(
+//                    {
+//
+//                    },
+//                    {
+//                        errorHandler.handleError(it)
+//                    }
+//                ).storeToComposite(onStartSubscriptions)
+//        }
     }
 }

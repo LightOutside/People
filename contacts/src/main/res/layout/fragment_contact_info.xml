@@ -1,78 +1,91 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="?themeAccent"
-        app:navigationIcon="@drawable/ic_back"/>
+    <data>
+        <variable
+            name="vm"
+            type="com.olizuro.contacts.presentation.viewmodels.IContactInfoViewModel" />
+    </data>
 
-    <ScrollView
+    <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="?themeBackground">
 
-        <LinearLayout
+        android:orientation="vertical">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="12dp">
+            android:background="?themeAccent"
+            app:navigationIcon="@drawable/ic_back" />
 
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/name"
-                android:layout_width="wrap_content"
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="?themeBackground">
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:ellipsize="end"
-                android:maxLines="1"
-                android:textAppearance="@style/TextMedium.H0"
-                android:textColor="?themeBackgroundText" />
+                android:orientation="vertical"
+                android:padding="12dp">
 
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/phone"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:ellipsize="end"
-                android:maxLines="1"
-                android:layout_marginTop="6dp"
-                android:textAppearance="@style/TextMedium.H3"
-                android:textColor="?themeBackgroundText_Clickable" />
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:textAppearance="@style/TextMedium.H0"
+                    android:textColor="?themeBackgroundText"
+                    android:text="@{vm.name}"/>
 
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/temperament"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:ellipsize="end"
-                android:maxLines="1"
-                android:layout_marginTop="6dp"
-                android:textAppearance="@style/TextMedium.H3"
-                android:textColor="?themeBackgroundText_Dilute" />
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/phone"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:layout_marginTop="6dp"
+                    android:textAppearance="@style/TextMedium.H3"
+                    android:textColor="?themeBackgroundText_Clickable"
+                    android:onClick="@{(view) -> vm.showDialer()}"/>
 
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/education_period"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="6dp"
-                android:ellipsize="end"
-                android:maxLines="1"
-                android:textAppearance="@style/TextMedium.H3"
-                android:textColor="?themeBackgroundText_Dilute" />
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/temperament"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:layout_marginTop="6dp"
+                    android:textAppearance="@style/TextMedium.H3"
+                    android:textColor="?themeBackgroundText_Dilute" />
 
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/biography"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="6dp"
-                android:textAppearance="@style/TextMedium.H3"
-                android:textColor="?themeBackgroundText" />
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/education_period"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="6dp"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:textAppearance="@style/TextMedium.H3"
+                    android:textColor="?themeBackgroundText_Dilute" />
 
-        </LinearLayout>
-    </ScrollView>
-</LinearLayout>
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/biography"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="6dp"
+                    android:textAppearance="@style/TextMedium.H3"
+                    android:textColor="?themeBackgroundText" />
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+        </androidx.core.widget.NestedScrollView>
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+</layout>
 
 

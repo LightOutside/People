@@ -10,7 +10,7 @@ import com.olizuro.contacts.presentation.viewmodels.IContactListViewModel
 import o.lizuro.utils.di.general.ViewModelFactory
 
 @Module
-class ContactListModule {
+class ContactListFragmentModule {
     @Provides
     fun providesIContactListViewModel(
         fragment: ContactListFragment,

@@ -1,6 +1,7 @@
 package o.lizuro.people.di
 
 import com.olizuro.contacts.di.ContactsComponent
+import com.olizuro.mainscreen.di.MainScreenComponent
 import dagger.Component
 import dagger.android.support.AndroidSupportInjectionModule
 import o.lizuro.core.di.*
@@ -11,7 +12,8 @@ import javax.inject.Singleton
 @Component(
     dependencies = [
         IToolsProvider::class,
-        IContactsProvider::class
+        IContactsProvider::class,
+        IMainScreenProvider::class
     ],
     modules = [
         AndroidSupportInjectionModule::class,
@@ -29,10 +31,12 @@ interface AppComponent : IApplicationProvider {
 
                 val toolsProvider = ToolsComponent.Initializer.init(app)
                 val contactsProvider = ContactsComponent.Initializer.init(toolsProvider)
+                val mainScreenProvider = MainScreenComponent.Initializer.init(toolsProvider)
 
                 return DaggerAppComponent.builder()
                     .iToolsProvider(toolsProvider)
                     .iContactsProvider(contactsProvider)
+                    .iMainScreenProvider(mainScreenProvider)
                     .build()
             }
         }

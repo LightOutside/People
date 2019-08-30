@@ -1,19 +1,18 @@
 package com.olizuro.contacts.presentation.viewmodels
 
-import android.util.Log
-import androidx.lifecycle.ViewModel
 import io.reactivex.Flowable
 import io.reactivex.processors.BehaviorProcessor
 import o.lizuro.core.contacts.IContactsUseCases
 import o.lizuro.core.entities.Contact
 import o.lizuro.core.entities.DataState
 import o.lizuro.core.tools.INavigation
+import viewmodels.BaseViewModel
 import javax.inject.Inject
 
 class ContactListViewModel @Inject constructor(
     private var contactsUseCases: IContactsUseCases,
     private var navigation: INavigation
-) : ViewModel(), IContactListViewModel {
+) : BaseViewModel(), IContactListViewModel {
 
     private val inputProcessor = BehaviorProcessor.createDefault("")
 
@@ -23,14 +22,8 @@ class ContactListViewModel @Inject constructor(
 
     override val contacts: Flowable<List<Contact>>
         get() = inputProcessor.distinctUntilChanged()
-            .doOnNext {
-                Log.d("QQQ","master: $it")
-            }
             .switchMap {
                 contactsUseCases.findContacts(it.toLowerCase())
-            }
-            .doOnNext {
-                Log.d("QQQ","slave: $it.size")
             }
 
 
