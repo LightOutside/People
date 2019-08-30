@@ -8,13 +8,8 @@ import androidx.databinding.DataBindingUtil
 import com.olizuro.contacts.R
 import com.olizuro.contacts.databinding.FragmentContactInfoBindingImpl
 import com.olizuro.contacts.presentation.viewmodels.IContactInfoViewModel
-import io.reactivex.android.schedulers.AndroidSchedulers
 import kotlinx.android.synthetic.main.fragment_contact_info.*
-import o.lizuro.core.tools.IErrorHandler
 import o.lizuro.coreui.views.BaseFragment
-import o.lizuro.utils.rx.storeToComposite
-import java.text.SimpleDateFormat
-import javax.inject.Inject
 
 class ContactInfoFragment : BaseFragment<IContactInfoViewModel>() {
     companion object {
@@ -28,9 +23,6 @@ class ContactInfoFragment : BaseFragment<IContactInfoViewModel>() {
             }
         }
     }
-
-    @Inject
-    lateinit var errorHandler: IErrorHandler
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -55,25 +47,5 @@ class ContactInfoFragment : BaseFragment<IContactInfoViewModel>() {
                 viewModel.navigateBack()
             }
         }
-//        phone.apply {
-//            setOnClickListener { viewModel.showDialer(context, phone.text.toString()) }
-//        }
-    }
-
-    override fun onStart() {
-        super.onStart()
-
-//        arguments?.getString(BUNDLE_CONTACT_ID)?.let { contactId ->
-//            viewModel.getContact(contactId)
-//                .observeOn(AndroidSchedulers.mainThread())
-//                .subscribe(
-//                    {
-//
-//                    },
-//                    {
-//                        errorHandler.handleError(it)
-//                    }
-//                ).storeToComposite(onStartSubscriptions)
-//        }
     }
 }

@@ -1,14 +1,14 @@
 package com.olizuro.contacts.presentation.viewmodels
 
-import android.content.Context
-import androidx.lifecycle.LiveData
-import io.reactivex.Flowable
-import o.lizuro.core.entities.Contact
+import androidx.lifecycle.MutableLiveData
 
 interface IContactInfoViewModel {
-    //fun getContact(id: String) : Flowable<Contact>
-    val name: LiveData<String>
-    fun showDialer(context: Context, phone: String)
+    val name: MutableLiveData<String>
+    val phone: MutableLiveData<String>
+    val temperament: MutableLiveData<String>
+    val educationPeriod: MutableLiveData<String>
+    val biography: MutableLiveData<String>
+
     fun showDialer()
     fun navigateBack()
 }

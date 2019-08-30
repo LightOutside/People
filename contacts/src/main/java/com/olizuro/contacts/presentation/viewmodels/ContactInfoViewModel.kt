@@ -7,14 +7,13 @@ import android.net.Uri
 import android.os.Bundle
 import androidx.lifecycle.MutableLiveData
 import com.olizuro.contacts.presentation.views.ContactInfoFragment.Companion.BUNDLE_CONTACT_ID
-import io.reactivex.Flowable
+import io.reactivex.android.schedulers.AndroidSchedulers
 import o.lizuro.core.contacts.IContactsUseCases
-import o.lizuro.core.entities.Contact
 import o.lizuro.core.tools.IErrorHandler
 import o.lizuro.core.tools.INavigation
 import o.lizuro.utils.rx.storeToComposite
 import viewmodels.BaseViewModel
-import java.lang.Exception
+import java.text.SimpleDateFormat
 import javax.inject.Inject
 
 class ContactInfoViewModel @Inject constructor(
@@ -28,40 +27,41 @@ class ContactInfoViewModel @Inject constructor(
         contactsUseCases.getContact(
             arguments.getString(BUNDLE_CONTACT_ID) ?: throw Exception("Missing contactId argument")
         )
+            .observeOn(AndroidSchedulers.mainThread())
             .subscribe(
                 {
                     name.value = it.name
-//                    phone.text = it.phone
-//                    temperament.text = it.temperament.value.capitalize()
-//
-//                    val parser = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss")
-//                    val formatter = SimpleDateFormat("dd.MM.yyyy")
-//
-//                    val date1 = parser.parse(it.educationPeriod.start)
-//                    val date2 = parser.parse(it.educationPeriod.end)
-//                    education_period.text = if (date1 < date2) {
-//                        "${formatter.format(date1)} - ${formatter.format(date2)}"
-//                    } else {
-//                        "${formatter.format(date2)} - ${formatter.format(date1)}"
-//                    }
-//
-//                    biography.text = it.biography
+                    phone.value = it.phone
+                    temperament.value = it.temperament.value.capitalize()
+
+                    val parser = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss")
+                    val formatter = SimpleDateFormat("dd.MM.yyyy")
+
+                    val date1 = parser.parse(it.educationPeriod.start)
+                    val date2 = parser.parse(it.educationPeriod.end)
+                    educationPeriod.value = if (date1 < date2) {
+                        "${formatter.format(date1)} - ${formatter.format(date2)}"
+                    } else {
+                        "${formatter.format(date2)} - ${formatter.format(date1)}"
+                    }
+
+                    biography.value = it.biography
                 },
                 { e ->
-
+                    errorHandler.handleError(e)
                 }
             ).storeToComposite(subscriptions)
     }
 
     override var name: MutableLiveData<String> = MutableLiveData()
+    override var phone: MutableLiveData<String> = MutableLiveData()
+    override var temperament: MutableLiveData<String> = MutableLiveData()
+    override var educationPeriod: MutableLiveData<String> = MutableLiveData()
+    override var biography: MutableLiveData<String> = MutableLiveData()
 
-//    override fun getContact(id: String): Flowable<Contact> {
-//        return
+//    fun showDialer(context: Context, phone: String) {
+//        tryRunIntent(context, Intent(Intent.ACTION_DIAL, Uri.fromParts("tel", phone, null)))
 //    }
-
-    override fun showDialer(context: Context, phone: String) {
-        tryRunIntent(context, Intent(Intent.ACTION_DIAL, Uri.fromParts("tel", phone, null)))
-    }
 
     override fun showDialer() {
         errorHandler.notifyError("Here!")
@@ -70,7 +70,6 @@ class ContactInfoViewModel @Inject constructor(
     override fun navigateBack() {
         navigation.router.backTo(navigation.getScreenContactList())
     }
-
 
     //TODO Move to navigator
     private fun tryRunIntent(context: Context, intent: Intent) {

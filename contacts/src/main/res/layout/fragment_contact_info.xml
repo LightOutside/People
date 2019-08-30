@@ -3,12 +3,6 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <data>
-        <variable
-            name="vm"
-            type="com.olizuro.contacts.presentation.viewmodels.IContactInfoViewModel" />
-    </data>
-
     <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -34,57 +28,62 @@
                 android:padding="12dp">
 
                 <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:ellipsize="end"
                     android:maxLines="1"
+                    android:text="@{vm.name}"
                     android:textAppearance="@style/TextMedium.H0"
-                    android:textColor="?themeBackgroundText"
-                    android:text="@{vm.name}"/>
+                    android:textColor="?themeBackgroundText" />
 
                 <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/phone"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="6dp"
                     android:ellipsize="end"
                     android:maxLines="1"
-                    android:layout_marginTop="6dp"
+                    android:onClick="@{(view) -> vm.showDialer()}"
+                    android:text="@{vm.phone}"
                     android:textAppearance="@style/TextMedium.H3"
-                    android:textColor="?themeBackgroundText_Clickable"
-                    android:onClick="@{(view) -> vm.showDialer()}"/>
+                    android:textColor="?themeBackgroundText_Clickable" />
 
                 <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/temperament"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:ellipsize="end"
-                    android:maxLines="1"
-                    android:layout_marginTop="6dp"
-                    android:textAppearance="@style/TextMedium.H3"
-                    android:textColor="?themeBackgroundText_Dilute" />
-
-                <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/education_period"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="6dp"
                     android:ellipsize="end"
                     android:maxLines="1"
+                    android:text="@{vm.temperament}"
                     android:textAppearance="@style/TextMedium.H3"
                     android:textColor="?themeBackgroundText_Dilute" />
 
                 <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/biography"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="6dp"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:text="@{vm.educationPeriod}"
+                    android:textAppearance="@style/TextMedium.H3"
+                    android:textColor="?themeBackgroundText_Dilute" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="6dp"
+                    android:text="@{vm.biography}"
                     android:textAppearance="@style/TextMedium.H3"
                     android:textColor="?themeBackgroundText" />
 
             </androidx.appcompat.widget.LinearLayoutCompat>
         </androidx.core.widget.NestedScrollView>
     </androidx.appcompat.widget.LinearLayoutCompat>
+
+    <data>
+        <variable
+            name="vm"
+            type="com.olizuro.contacts.presentation.viewmodels.IContactInfoViewModel" />
+    </data>
 
 </layout>
 
