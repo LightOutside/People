@@ -2,11 +2,11 @@ package com.olizuro.contacts.di
 
 import android.os.Bundle
 import androidx.lifecycle.ViewModelProviders
-import com.olizuro.contacts.presentation.viewmodels.ContactInfoViewModel
-import com.olizuro.contacts.presentation.views.ContactInfoFragment
+import com.olizuro.contacts.presentation.viewmodels.info.ContactInfoViewModel
+import com.olizuro.contacts.presentation.views.info.ContactInfoFragment
 import dagger.Module
 import dagger.Provides
-import com.olizuro.contacts.presentation.viewmodels.IContactInfoViewModel
+import com.olizuro.contacts.presentation.viewmodels.info.IContactInfoViewModel
 import o.lizuro.utils.di.general.ViewModelFactory
 
 @Module

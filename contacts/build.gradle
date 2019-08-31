@@ -36,4 +36,7 @@ dependencies {
     implementation room.values()
     implementation cicerone.values()
     kapt roomKapt.values()
+
+    testImplementation test.values()
+    androidTestImplementation androidTest.values()
 }

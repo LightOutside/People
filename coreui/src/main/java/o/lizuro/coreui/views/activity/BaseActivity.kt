@@ -1,4 +1,4 @@
-package o.lizuro.coreui.views
+package o.lizuro.coreui.views.activity
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity

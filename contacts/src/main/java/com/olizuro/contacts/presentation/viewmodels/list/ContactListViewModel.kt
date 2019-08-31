@@ -1,4 +1,4 @@
-package com.olizuro.contacts.presentation.viewmodels
+package com.olizuro.contacts.presentation.viewmodels.list
 
 import io.reactivex.Flowable
 import io.reactivex.processors.BehaviorProcessor
@@ -6,7 +6,7 @@ import o.lizuro.core.contacts.IContactsUseCases
 import o.lizuro.core.entities.Contact
 import o.lizuro.core.entities.DataState
 import o.lizuro.core.tools.INavigation
-import viewmodels.BaseViewModel
+import o.lizuro.coreui.viewmodels.BaseViewModel
 import javax.inject.Inject
 
 class ContactListViewModel @Inject constructor(

@@ -1,4 +1,4 @@
-package o.lizuro.coreui.views
+package o.lizuro.coreui.views.fragment
 
 import android.content.Context
 import androidx.fragment.app.Fragment

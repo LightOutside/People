@@ -1,15 +1,16 @@
 package o.lizuro.people.tools
 
 import androidx.fragment.app.Fragment
-import com.olizuro.contacts.presentation.views.ContactInfoFragment
-import com.olizuro.contacts.presentation.views.ContactListFragment
+import com.olizuro.contacts.presentation.views.info.ContactInfoFragment
+import com.olizuro.contacts.presentation.views.list.ContactListFragment
 import o.lizuro.core.tools.INavigation
 import ru.terrakok.cicerone.Cicerone
 import ru.terrakok.cicerone.NavigatorHolder
 import ru.terrakok.cicerone.Router
 import ru.terrakok.cicerone.android.support.SupportAppScreen
+import javax.inject.Inject
 
-class NavigationImpl : INavigation {
+class NavigationImpl @Inject constructor() : INavigation {
 
     var cicerone: Cicerone<Router> = Cicerone.create()
 

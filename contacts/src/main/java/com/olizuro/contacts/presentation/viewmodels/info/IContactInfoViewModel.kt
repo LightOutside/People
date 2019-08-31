@@ -1,4 +1,4 @@
-package com.olizuro.contacts.presentation.viewmodels
+package com.olizuro.contacts.presentation.viewmodels.info
 
 import androidx.lifecycle.MutableLiveData
 

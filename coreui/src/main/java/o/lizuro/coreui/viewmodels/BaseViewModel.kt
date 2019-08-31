@@ -1,4 +1,4 @@
-package viewmodels
+package o.lizuro.coreui.viewmodels
 
 import androidx.lifecycle.ViewModel
 import io.reactivex.disposables.CompositeDisposable

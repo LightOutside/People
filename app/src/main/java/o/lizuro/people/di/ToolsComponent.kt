@@ -2,12 +2,8 @@ package o.lizuro.people.di
 
 import dagger.BindsInstance
 import dagger.Component
-import dagger.Module
-import dagger.Provides
 import o.lizuro.core.IApp
 import o.lizuro.core.di.IToolsProvider
-import o.lizuro.core.tools.*
-import o.lizuro.people.tools.*
 import javax.inject.Singleton
 
 @Singleton

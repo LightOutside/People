@@ -24,7 +24,8 @@
             android:background="@drawable/bg_search_view"
             android:maxLines="1"
             app:iconifiedByDefault="false"
-            app:queryHint="Поиск" />
+            app:queryHint="Поиск"
+            android:imeOptions="flagNoExtractUi"/>
 
     </androidx.appcompat.widget.Toolbar>
 

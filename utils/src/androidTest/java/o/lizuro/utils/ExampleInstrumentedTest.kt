@@ -1,4 +1,4 @@
-package o.lizuro.people
+package o.lizuro.utils
 
 import android.content.Context
 import androidx.test.core.app.ApplicationProvider

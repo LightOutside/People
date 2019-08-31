@@ -2,8 +2,8 @@ package o.lizuro.people.di
 
 import com.olizuro.contacts.di.ContactInfoFragmentModule
 import com.olizuro.contacts.di.ContactListFragmentModule
-import com.olizuro.contacts.presentation.views.ContactInfoFragment
-import com.olizuro.contacts.presentation.views.ContactListFragment
+import com.olizuro.contacts.presentation.views.info.ContactInfoFragment
+import com.olizuro.contacts.presentation.views.list.ContactListFragment
 import com.olizuro.mainscreen.di.MainActivityModule
 import com.olizuro.mainscreen.presentation.views.MainActivity
 import dagger.Module

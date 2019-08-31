@@ -24,7 +24,10 @@ ext.versions = [
         rxkotlin            : "2.1.0",
         dagger              : "2.19",
         gson                : "2.8.2",
-        cicerone            : "5.0.0"
+        cicerone            : "5.0.0",
+        junit               : "4.12",
+        testAndroidx        : "1.1.1",
+        testEspresso        : "3.1.1"
 ]
 
 ext.classpaths = [
@@ -95,4 +98,14 @@ ext.roomKapt = [
 
 ext.cicerone = [
         cicerone                    : "ru.terrakok.cicerone:cicerone:$versions.cicerone"
+]
+
+ext.test = [
+        junit                       : "junit:junit:$versions.junit"
+]
+
+ext.androidTest = [
+        junit                       : "androidx.test.ext:junit:$versions.testAndroidx",
+        runner                      : "androidx.test:runner:$versions.testAndroidx",
+        espresso                    : "androidx.test.espresso:espresso-core:$versions.testEspresso"
 ]

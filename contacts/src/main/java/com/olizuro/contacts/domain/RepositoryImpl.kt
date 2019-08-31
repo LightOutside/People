@@ -7,7 +7,8 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import o.lizuro.core.entities.Contact
 import o.lizuro.core.entities.DataState
-import o.lizuro.core.tools.IErrorHandler
+import o.lizuro.core.tools.ILogger
+import o.lizuro.core.tools.INotifier
 import o.lizuro.core.tools.INetworkChecker
 import o.lizuro.core.tools.IPreferences
 import javax.inject.Inject
@@ -15,7 +16,8 @@ import javax.inject.Inject
 class RepositoryImpl @Inject constructor(
     private val preferences: IPreferences,
     private val networkChecker: INetworkChecker,
-    private val errorHandler: IErrorHandler,
+    private val notifier: INotifier,
+    private val logger: ILogger,
     private val localDataSource: com.olizuro.contacts.data.ILocalDataSource,
     private val networkDataSource: com.olizuro.contacts.data.INetworkDataSource
 ) : IRepository {
@@ -25,8 +27,8 @@ class RepositoryImpl @Inject constructor(
         private const val DATA_TTL = 60 * 1000 //1 min
     }
 
-    private val exceptionHandler = CoroutineExceptionHandler { _, exception ->
-        errorHandler.handleError(exception)
+    private val exceptionHandler = CoroutineExceptionHandler { _, e ->
+        logger.d(e.message)
         dataState.onNext(DataState.LOADED)
     }
 
@@ -45,7 +47,7 @@ class RepositoryImpl @Inject constructor(
                     preferences.saveLong(PREFERENCE_KEY_DATA_TIMESTAMP, System.currentTimeMillis())
                     localDataSource.setContacts(contactsFromGithub)
                 } else {
-                    errorHandler.notifyError("Нет подключения к сети")
+                    notifier.notify("Нет подключения к сети")
                 }
                 dataState.onNext(DataState.LOADED)
             }

@@ -1,4 +1,4 @@
-package com.olizuro.contacts.presentation.views
+package com.olizuro.contacts.presentation.views.info
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -7,9 +7,9 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import com.olizuro.contacts.R
 import com.olizuro.contacts.databinding.FragmentContactInfoBindingImpl
-import com.olizuro.contacts.presentation.viewmodels.IContactInfoViewModel
+import com.olizuro.contacts.presentation.viewmodels.info.IContactInfoViewModel
 import kotlinx.android.synthetic.main.fragment_contact_info.*
-import o.lizuro.coreui.views.BaseFragment
+import o.lizuro.coreui.views.fragment.BaseFragment
 
 class ContactInfoFragment : BaseFragment<IContactInfoViewModel>() {
     companion object {

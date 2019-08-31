@@ -12,9 +12,10 @@ interface IToolsProvider {
     fun provideLogger(): ILogger
     fun provideToaster(): IToaster
     fun providePreferences(): IPreferences
-    fun provideErrorHandler(): IErrorHandler
+    fun provideErrorHandler(): INotifier
     fun provideNetworkChecker(): INetworkChecker
     fun provideNavigator(): INavigation
+    fun provideSystemNavigator(): ISystemNavigator
 }
 
 interface IContactsProvider {

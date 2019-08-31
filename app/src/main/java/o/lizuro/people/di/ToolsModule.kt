@@ -1,56 +1,38 @@
 package o.lizuro.people.di
 
+import dagger.Binds
 import dagger.Module
-import dagger.Provides
-import o.lizuro.core.IApp
 import o.lizuro.core.tools.*
 import o.lizuro.people.tools.*
 import javax.inject.Singleton
 
 @Module
-class ToolsModule {
-    @Module
-    companion object {
-        @JvmStatic
-        @Provides
-        @Singleton
-        fun provideLogger(): ILogger {
-            return LoggerImpl()
-        }
+interface ToolsModule {
+    @Binds
+    @Singleton
+    fun bindsLogger(impl: LoggerImpl): ILogger
 
-        @JvmStatic
-        @Provides
-        @Singleton
-        fun provideToaster(app: IApp): IToaster {
-            return ToasterImpl(app.getApplicationContext())
-        }
+    @Binds
+    @Singleton
+    fun bindsToaster(impl: ToasterImpl): IToaster
 
-        @JvmStatic
-        @Provides
-        @Singleton
-        fun providePreferences(app: IApp): IPreferences {
-            return PreferencesImpl(app.getApplicationContext())
-        }
+    @Binds
+    @Singleton
+    fun bindsPreferences(impl: PreferencesImpl): IPreferences
 
-        @JvmStatic
-        @Provides
-        @Singleton
-        fun provideErrorHandler(): IErrorHandler {
-            return ErrorHandlerImpl()
-        }
+    @Binds
+    @Singleton
+    fun bindsErrorHandler(impl: NotifierImpl): INotifier
 
-        @JvmStatic
-        @Provides
-        @Singleton
-        fun provideNetworkChecker(app: IApp): INetworkChecker {
-            return NetworkCheckerImpl(app.getApplicationContext())
-        }
+    @Binds
+    @Singleton
+    fun bindsNetworkChecker(impl: NetworkCheckerImpl): INetworkChecker
 
-        @JvmStatic
-        @Provides
-        @Singleton
-        fun provideNavigation(): INavigation {
-            return NavigationImpl()
-        }
-    }
+    @Binds
+    @Singleton
+    fun bindsNavigation(impl: NavigationImpl): INavigation
+
+    @Binds
+    @Singleton
+    fun bindsSystemNavigator(impl: SystemNavigatorImpl): ISystemNavigator
 }

@@ -1,4 +1,4 @@
-package com.olizuro.contacts.presentation.viewmodels
+package com.olizuro.contacts.presentation.viewmodels.list
 
 import io.reactivex.Flowable
 import o.lizuro.core.entities.Contact

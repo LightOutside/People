@@ -1,7 +1,6 @@
 package com.olizuro.mainscreen.presentation.views
 
 import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
 import com.google.android.material.snackbar.Snackbar
@@ -9,19 +8,16 @@ import com.google.android.material.snackbar.Snackbar
 import com.olizuro.mainscreen.R
 import com.olizuro.mainscreen.presentation.viewmodels.IMainScreenViewModel
 import dagger.android.AndroidInjection
-import dagger.android.DispatchingAndroidInjector
-import dagger.android.support.HasSupportFragmentInjector
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import o.lizuro.core.contacts.IContactsUseCases
-import o.lizuro.core.tools.IErrorHandler
+import o.lizuro.core.tools.INotifier
 import o.lizuro.core.tools.ILogger
 import o.lizuro.core.tools.INavigation
-import o.lizuro.coreui.views.BaseActivity
+import o.lizuro.coreui.views.activity.BaseActivity
 import o.lizuro.utils.rx.storeToComposite
 import ru.terrakok.cicerone.android.support.SupportAppNavigator
 import ru.terrakok.cicerone.commands.Command
-import ru.terrakok.cicerone.commands.Forward
 import javax.inject.Inject
 
 
@@ -31,7 +27,7 @@ class MainActivity : BaseActivity<IMainScreenViewModel>() {
     lateinit var contactsUseCases: IContactsUseCases
 
     @Inject
-    lateinit var errorHandler: IErrorHandler
+    lateinit var notifier: INotifier
 
     @Inject
     lateinit var logger: ILogger
@@ -58,7 +54,7 @@ class MainActivity : BaseActivity<IMainScreenViewModel>() {
 
         setContentView(R.layout.activity_main)
 
-        setupErrorHandler()
+        setupNotifier()
 
         navigation.router.newRootScreen(navigation.getScreenContactList())
     }
@@ -84,15 +80,15 @@ class MainActivity : BaseActivity<IMainScreenViewModel>() {
 
     override fun supportFragmentInjector() = dispatchingAndroidInjector
 
-    private fun setupErrorHandler() {
-        errorHandler.getErrorMessages()
+    private fun setupNotifier() {
+        notifier.messagesFlow
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(
                 {
                     Snackbar.make(findViewById(R.id.content), it, Snackbar.LENGTH_LONG).show()
                 },
                 {
-                    logger.d("Oh, wait!")
+                    logger.d(it.message)
                 }
             ).storeToComposite(onCreateSubscriptions)
     }

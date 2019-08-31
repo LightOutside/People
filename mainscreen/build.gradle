@@ -32,4 +32,7 @@ dependencies {
     implementation dagger.values()
     kapt daggerKapt.values()
     implementation cicerone.values()
+
+    testImplementation test.values()
+    androidTestImplementation androidTest.values()
 }

@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+    <data>
+        <variable
+            name="item"
+            type="com.olizuro.contacts.presentation.viewmodels.list.ContactViewModel" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_ripple_dark"
+        android:orientation="vertical"
+        android:padding="12dp"
+        android:onClick="@{() -> item.showInfo()}">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:text="@{item.name}"
+                android:textAppearance="@style/TextMedium.H1"
+                android:textColor="?themeBackgroundText" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{item.height}"
+                android:textAppearance="@style/TextMedium.H3"
+                android:textColor="?themeBackgroundText" />
+
+        </LinearLayout>
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:text="@{item.phone}"
+            android:textAppearance="@style/TextMedium.H3"
+            android:textColor="?themeBackgroundText" />
+
+    </LinearLayout>
+
+</layout>

@@ -2,18 +2,20 @@ package com.olizuro.contacts.data
 
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
+import io.reactivex.rxkotlin.toMaybe
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
 import o.lizuro.core.entities.Contact
-import o.lizuro.core.tools.IErrorHandler
+import o.lizuro.core.tools.ILogger
+import o.lizuro.core.tools.INotifier
 import java.net.MalformedURLException
 import java.net.URL
 import java.util.concurrent.CopyOnWriteArrayList
 import javax.inject.Inject
 
 class NetworkDataSourceImpl @Inject constructor(
-    private val errorHandler: IErrorHandler
+    private val logger: ILogger
 ) : INetworkDataSource {
 
     private val sources = listOf(
@@ -33,7 +35,7 @@ class NetworkDataSourceImpl @Inject constructor(
                 }
             }
         } catch (e: MalformedURLException) {
-            errorHandler.handleError(e)
+            logger.d(e.message)
         }
 
         contacts
