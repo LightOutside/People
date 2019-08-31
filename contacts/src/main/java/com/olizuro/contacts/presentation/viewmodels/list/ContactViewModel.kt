@@ -7,9 +7,9 @@ class ContactViewModel(
     val contact: Contact,
     private val onClick: (id: String) -> Unit
 ) {
-    var name: MutableLiveData<String> = MutableLiveData()
-    var phone: MutableLiveData<String> = MutableLiveData()
-    var height: MutableLiveData<String> = MutableLiveData()
+    val name: MutableLiveData<String> = MutableLiveData()
+    val phone: MutableLiveData<String> = MutableLiveData()
+    val height: MutableLiveData<String> = MutableLiveData()
 
     init {
         name.value = contact.name

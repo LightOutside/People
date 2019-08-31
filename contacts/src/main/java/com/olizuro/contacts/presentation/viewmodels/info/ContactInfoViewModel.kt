@@ -25,11 +25,11 @@ class ContactInfoViewModel @Inject constructor(
         loadContact()
     }
 
-    override var name: MutableLiveData<String> = MutableLiveData()
-    override var phone: MutableLiveData<String> = MutableLiveData()
-    override var temperament: MutableLiveData<String> = MutableLiveData()
-    override var educationPeriod: MutableLiveData<String> = MutableLiveData()
-    override var biography: MutableLiveData<String> = MutableLiveData()
+    override val name: MutableLiveData<String> = MutableLiveData()
+    override val phone: MutableLiveData<String> = MutableLiveData()
+    override val temperament: MutableLiveData<String> = MutableLiveData()
+    override val educationPeriod: MutableLiveData<String> = MutableLiveData()
+    override val biography: MutableLiveData<String> = MutableLiveData()
 
     override fun showDialer() {
         systemNavigator.showDialer(phone.value)
