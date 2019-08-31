@@ -19,9 +19,9 @@ class NetworkDataSourceImpl @Inject constructor(
 ) : INetworkDataSource {
 
     private val sources = listOf(
-        "https://raw.githubusercontent.com/SkbkonturMobile/mobile-test-droid/master/json/generated-01.json",
-        "https://raw.githubusercontent.com/SkbkonturMobile/mobile-test-droid/master/json/generated-02.json",
-        "https://raw.githubusercontent.com/SkbkonturMobile/mobile-test-droid/master/json/generated-03.json"
+        "https://raw.githubusercontent.com/LightOutside/Test/master/generated-01.json",
+        "https://raw.githubusercontent.com/LightOutside/Test/master/generated-02.json",
+        "https://raw.githubusercontent.com/LightOutside/Test/master/generated-03.json"
     )
 
     override suspend fun getContacts(): List<Contact> = coroutineScope {
