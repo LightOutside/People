@@ -1,57 +1,67 @@
 <?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="?themeBackground">
+    <data>
+        <import type="android.view.View"/>
+        <variable
+            name="vm"
+            type="com.olizuro.contacts.presentation.viewmodels.list.IContactListViewModel" />
+    </data>
 
-    <androidx.appcompat.widget.Toolbar
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="?themeAccent"
-        app:contentInsetLeft="0dp"
-        app:contentInsetStart="0dp"
-        app:contentInsetRight="0dp"
-        app:contentInsetEnd="0dp">
+        android:layout_height="match_parent"
+        android:background="?themeBackground"
+        android:orientation="vertical">
 
-        <androidx.appcompat.widget.SearchView
-            android:id="@+id/input"
+        <androidx.appcompat.widget.Toolbar
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="4dp"
-            android:background="@drawable/bg_search_view"
-            android:maxLines="1"
-            app:iconifiedByDefault="false"
-            app:queryHint="Поиск"
-            android:imeOptions="flagNoExtractUi"/>
+            android:background="?themeAccent"
+            app:contentInsetEnd="0dp"
+            app:contentInsetLeft="0dp"
+            app:contentInsetRight="0dp"
+            app:contentInsetStart="0dp">
 
-    </androidx.appcompat.widget.Toolbar>
+            <androidx.appcompat.widget.SearchView
+                android:id="@+id/input"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="4dp"
+                android:background="@drawable/bg_search_view"
+                android:imeOptions="flagNoExtractUi"
+                android:maxLines="1"
+                app:iconifiedByDefault="false"
+                app:queryHint="Поиск" />
 
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        </androidx.appcompat.widget.Toolbar>
 
-        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-            android:id="@+id/pull_to_refresh"
+        <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/list"
+            <ProgressBar
+                android:id="@+id/loader"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:visibility="@{vm.isLoaderVisible ? View.VISIBLE : View.GONE}"/>
+
+            <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+                android:id="@+id/pull_to_refresh"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:clipToPadding="false" />
+                android:layout_height="match_parent">
 
-        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/list"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:clipToPadding="false"
+                    android:visibility="@{vm.isListVisible ? View.VISIBLE : View.GONE}"/>
 
-        <ProgressBar
-            android:id="@+id/loader"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center" />
+            </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
-    </FrameLayout>
-
-</LinearLayout>
+        </FrameLayout>
+    </LinearLayout>
+</layout>

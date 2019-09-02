@@ -22,7 +22,7 @@ class ContactInfoViewModel @Inject constructor(
 ) : BaseViewModel(), IContactInfoViewModel {
 
     init {
-        loadContact()
+        setupContact()
     }
 
     override val name: MutableLiveData<String> = MutableLiveData()
@@ -39,7 +39,7 @@ class ContactInfoViewModel @Inject constructor(
         navigation.router.backTo(navigation.getScreenContactList())
     }
 
-    private fun loadContact() {
+    private fun setupContact() {
         contactsUseCases.getContact(
             arguments.getString(BUNDLE_CONTACT_ID) ?: throw Exception("Missing contactId argument")
         )

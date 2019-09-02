@@ -10,4 +10,8 @@ class DataBindingViewHolder<T>(private val binding: ViewDataBinding) :
         binding.setVariable(itemId, item)
         binding.executePendingBindings()
     }
+
+    fun cleanUp() {
+        binding.unbind()
+    }
 }

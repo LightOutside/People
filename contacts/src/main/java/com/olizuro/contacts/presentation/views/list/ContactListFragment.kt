@@ -4,25 +4,20 @@ import android.graphics.PorterDuff
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
-import android.view.View.GONE
-import android.view.View.VISIBLE
 import android.view.ViewGroup
-import androidx.recyclerview.widget.DiffUtil
+import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.jakewharton.rxbinding3.appcompat.queryTextChanges
-import com.olizuro.contacts.BR
 import com.olizuro.contacts.R
+import com.olizuro.contacts.databinding.FragmentContactListBindingImpl
 import com.olizuro.contacts.presentation.viewmodels.list.ContactViewModel
 import com.olizuro.contacts.presentation.viewmodels.list.IContactListViewModel
 import io.reactivex.android.schedulers.AndroidSchedulers
 import kotlinx.android.synthetic.main.fragment_contact_list.*
-import o.lizuro.core.contacts.IContactsUseCases
-import o.lizuro.core.entities.Contact
-import o.lizuro.core.entities.DataState
 import o.lizuro.core.tools.ILogger
 import o.lizuro.coreui.views.fragment.BaseFragment
-import o.lizuro.coreui.views.recyclerview.DataBindingAdapter
 import o.lizuro.utils.context.getAttrColor
 import o.lizuro.utils.rx.storeToComposite
 import java.util.concurrent.TimeUnit
@@ -46,7 +41,15 @@ class ContactListFragment : BaseFragment<IContactListViewModel>() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_contact_list, container, false)
+        return DataBindingUtil.inflate<FragmentContactListBindingImpl>(
+            inflater,
+            R.layout.fragment_contact_list,
+            container,
+            false
+        ).apply {
+            vm = viewModel
+            lifecycleOwner = this@ContactListFragment
+        }.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -63,7 +66,7 @@ class ContactListFragment : BaseFragment<IContactListViewModel>() {
 
         list.apply {
             layoutManager = LinearLayoutManager(context)
-            adapter = ContactsAdapter()
+            adapter = ContactListAdapter()
             addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
         }
 
@@ -91,56 +94,18 @@ class ContactListFragment : BaseFragment<IContactListViewModel>() {
 
     override fun onStart() {
         super.onStart()
-
-        viewModel.contacts
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe(
-                {
-                    (list.adapter as ContactsAdapter).submitList(it.map { ContactViewModel(it, viewModel::navigateToContactInfo) })
-                },
-                {
-                    logger.d(it.message)
-                }
-            ).storeToComposite(onStartSubscriptions)
-
-        viewModel.dataState
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe(
-                {
-                    pull_to_refresh.isRefreshing = false
-
-                    when (it) {
-                        DataState.LOADING -> {
-                            list.visibility = GONE
-                            loader.visibility = VISIBLE
-                        }
-                        DataState.LOADED -> {
-                            list.visibility = VISIBLE
-                            loader.visibility = GONE
-                        }
-                        else -> { /*do nothing*/
-                        }
-                    }
-                },
-                {
-                    logger.d(it.message)
-                }
-            ).storeToComposite(onStartSubscriptions)
-    }
-
-    inner class ContactsAdapter : DataBindingAdapter<ContactViewModel>(
-        object : DiffUtil.ItemCallback<ContactViewModel>() {
-            override fun areItemsTheSame(oldItem: ContactViewModel, newItem: ContactViewModel): Boolean {
-                return oldItem.contact.id == newItem.contact.id
+        viewModel.contacts.observe(
+            this,
+            Observer<List<ContactViewModel>> {
+                (list.adapter as ContactListAdapter).submitList(it)
             }
+        )
 
-            override fun areContentsTheSame(oldItem: ContactViewModel, newItem: ContactViewModel): Boolean {
-                return true
+        viewModel.isRefreshing.observe(
+            this,
+            Observer<Boolean> {
+                pull_to_refresh.isRefreshing = it
             }
-        }
-    ) {
-        override val itemId: Int = BR.item
-
-        override fun getItemViewType(position: Int) = R.layout.view_contact_list_item
+        )
     }
 }
