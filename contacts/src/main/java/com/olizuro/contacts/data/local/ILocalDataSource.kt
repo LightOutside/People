@@ -1,4 +1,4 @@
-package com.olizuro.contacts.data
+package com.olizuro.contacts.data.local
 
 import io.reactivex.Flowable
 import o.lizuro.core.entities.Contact

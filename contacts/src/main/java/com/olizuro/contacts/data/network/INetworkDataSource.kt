@@ -1,4 +1,4 @@
-package com.olizuro.contacts.data
+package com.olizuro.contacts.data.network
 
 import o.lizuro.core.entities.Contact
 

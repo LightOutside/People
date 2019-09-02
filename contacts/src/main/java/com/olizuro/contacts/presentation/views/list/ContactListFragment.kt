@@ -47,8 +47,8 @@ class ContactListFragment : BaseFragment<IContactListViewModel>() {
             container,
             false
         ).apply {
-            vm = viewModel
             lifecycleOwner = this@ContactListFragment
+            vm = viewModel
         }.root
     }
 

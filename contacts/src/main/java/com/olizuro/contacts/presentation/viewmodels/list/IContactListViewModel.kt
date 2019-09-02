@@ -9,6 +9,7 @@ interface IContactListViewModel {
     val contacts: MutableLiveData<List<ContactViewModel>>
     val isListVisible: MutableLiveData<Boolean>
     val isLoaderVisible: MutableLiveData<Boolean>
+    val isErrorVisible: MutableLiveData<Boolean>
     val isRefreshing: MutableLiveData<Boolean>
 
     fun inputTextChanged(text: String)

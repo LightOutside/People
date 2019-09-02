@@ -1,5 +1,7 @@
 package com.olizuro.contacts.domain
 
+import com.olizuro.contacts.data.local.ILocalDataSource
+import com.olizuro.contacts.data.network.INetworkDataSource
 import io.reactivex.Flowable
 import io.reactivex.processors.BehaviorProcessor
 import kotlinx.coroutines.CoroutineExceptionHandler
@@ -18,8 +20,8 @@ class RepositoryImpl @Inject constructor(
     private val networkChecker: INetworkChecker,
     private val notifier: INotifier,
     private val logger: ILogger,
-    private val localDataSource: com.olizuro.contacts.data.ILocalDataSource,
-    private val networkDataSource: com.olizuro.contacts.data.INetworkDataSource
+    private val localDataSource: ILocalDataSource,
+    private val networkDataSource: INetworkDataSource
 ) : IRepository {
 
     companion object {
@@ -29,7 +31,7 @@ class RepositoryImpl @Inject constructor(
 
     private val exceptionHandler = CoroutineExceptionHandler { _, e ->
         logger.d(e.message)
-        dataState.onNext(DataState.LOADED)
+        dataState.onNext(DataState.ERROR)
     }
 
     private val dataState: BehaviorProcessor<DataState> = BehaviorProcessor.createDefault(DataState.LOADED)
@@ -41,7 +43,9 @@ class RepositoryImpl @Inject constructor(
             val dataTimestamp = preferences.loadLong(PREFERENCE_KEY_DATA_TIMESTAMP, 0L)
 
             if (currentTime - dataTimestamp > DATA_TTL || forceRefresh) {
-                dataState.onNext(DataState.LOADING)
+                if(!forceRefresh) {
+                    dataState.onNext(DataState.LOADING)
+                }
                 if (networkChecker.isOnline()) {
                     val contactsFromGithub = networkDataSource.getContacts()
                     preferences.saveLong(PREFERENCE_KEY_DATA_TIMESTAMP, System.currentTimeMillis())

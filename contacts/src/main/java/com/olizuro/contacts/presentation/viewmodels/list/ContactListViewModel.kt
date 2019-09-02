@@ -22,6 +22,7 @@ class ContactListViewModel @Inject constructor(
     override val contacts: MutableLiveData<List<ContactViewModel>> = MutableLiveData()
     override val isListVisible: MutableLiveData<Boolean> = MutableLiveData()
     override val isLoaderVisible: MutableLiveData<Boolean> = MutableLiveData()
+    override val isErrorVisible: MutableLiveData<Boolean> = MutableLiveData()
     override val isRefreshing: MutableLiveData<Boolean> = MutableLiveData()
 
     init {
@@ -68,10 +69,17 @@ class ContactListViewModel @Inject constructor(
                         DataState.LOADING -> {
                             isListVisible.value = false
                             isLoaderVisible.value = true
+                            isErrorVisible.value = false
                         }
                         DataState.LOADED -> {
                             isListVisible.value = true
                             isLoaderVisible.value = false
+                            isErrorVisible.value = false
+                        }
+                        DataState.ERROR -> {
+                            isListVisible.value = false
+                            isLoaderVisible.value = false
+                            isErrorVisible.value = true
                         }
                         else -> { /*do nothing*/
                         }

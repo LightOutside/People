@@ -35,8 +35,8 @@ class ContactInfoFragment : BaseFragment<IContactInfoViewModel>() {
             container,
             false
         ).apply {
-            vm = viewModel
             lifecycleOwner = this@ContactInfoFragment
+            vm = viewModel
         }.root
     }
 
