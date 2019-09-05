@@ -9,6 +9,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.jakewharton.rxbinding3.appcompat.queryTextChanges
 import com.olizuro.contacts.R
 import com.olizuro.contacts.databinding.FragmentContactListBindingImpl
@@ -26,7 +27,7 @@ import javax.inject.Inject
 class ContactListFragment : BaseFragment<IContactListViewModel>() {
 
     companion object {
-        private const val INPUT_DEBOUNCE = 500L //ms
+        private const val INPUT_DEBOUNCE = 500L //0.5s
 
         fun create(): ContactListFragment {
             return ContactListFragment()

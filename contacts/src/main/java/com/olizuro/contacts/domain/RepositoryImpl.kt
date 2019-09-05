@@ -49,7 +49,7 @@ class RepositoryImpl @Inject constructor(
                 if (networkChecker.isOnline()) {
                     val contactsFromGithub = networkDataSource.getContacts()
                     preferences.saveLong(PREFERENCE_KEY_DATA_TIMESTAMP, System.currentTimeMillis())
-                    localDataSource.setContacts(contactsFromGithub)
+                    localDataSource.setContacts(contactsFromGithub.sortedBy { it.name })
                 } else {
                     notifier.notify("Нет подключения к сети")
                 }

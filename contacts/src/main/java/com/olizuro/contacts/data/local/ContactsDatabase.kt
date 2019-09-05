@@ -40,7 +40,7 @@ interface ContactsDao {
     @Query("SELECT * FROM contactdb WHERE id = :id")
     fun getContact(id: String): Flowable<ContactDb>
 
-    @Query("SELECT * FROM contactdb WHERE name LIKE :pattern OR phone LIKE :pattern ORDER BY name")
+    @Query("SELECT * FROM contactdb WHERE name LIKE :pattern OR phone LIKE :pattern")
     fun findContacts(pattern: String): Flowable<List<ContactDb>>
 }
 

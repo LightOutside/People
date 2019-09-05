@@ -12,7 +12,7 @@ import javax.inject.Inject
 
 class NavigationImpl @Inject constructor() : INavigation {
 
-    var cicerone: Cicerone<Router> = Cicerone.create()
+    private val cicerone: Cicerone<Router> = Cicerone.create()
 
     override val holder: NavigatorHolder
         get() = cicerone.navigatorHolder

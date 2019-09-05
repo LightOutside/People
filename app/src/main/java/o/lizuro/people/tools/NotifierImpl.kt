@@ -7,7 +7,7 @@ import javax.inject.Inject
 
 class NotifierImpl @Inject constructor() : INotifier {
 
-    private var messagesProcessor = PublishProcessor.create<String>()
+    private val messagesProcessor = PublishProcessor.create<String>()
 
     override val messagesFlow: Flowable<String>
         get() {

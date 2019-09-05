@@ -12,9 +12,9 @@ import o.lizuro.utils.rx.storeToComposite
 import javax.inject.Inject
 
 class ContactListViewModel @Inject constructor(
-    private var contactsUseCases: IContactsUseCases,
-    private var navigation: INavigation,
-    private var logger: ILogger
+    private val contactsUseCases: IContactsUseCases,
+    private val navigation: INavigation,
+    private val logger: ILogger
 ) : BaseViewModel(), IContactListViewModel {
 
     private val inputProcessor = BehaviorProcessor.createDefault("")

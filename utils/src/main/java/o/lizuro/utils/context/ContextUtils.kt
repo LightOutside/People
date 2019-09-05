@@ -5,15 +5,9 @@ import android.util.TypedValue
 import androidx.annotation.AttrRes
 
 fun Context.getAttrColor(@AttrRes attr: Int): Int {
-    val typedValue = TypedValue()
-    val theme = this.theme
-    theme.resolveAttribute(attr, typedValue, true)
-    return typedValue.data
+    return TypedValue().apply { theme.resolveAttribute(attr, this, true) }.data
 }
 
 fun Context.getAttrResId(@AttrRes attr: Int): Int {
-    val typedValue = TypedValue()
-    val theme = this.theme
-    theme.resolveAttribute(attr, typedValue, true)
-    return typedValue.resourceId
+    return TypedValue().apply { theme.resolveAttribute(attr, this, true) }.resourceId
 }

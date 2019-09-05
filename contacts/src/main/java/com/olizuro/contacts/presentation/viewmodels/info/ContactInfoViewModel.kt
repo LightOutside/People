@@ -14,11 +14,11 @@ import java.text.SimpleDateFormat
 import javax.inject.Inject
 
 class ContactInfoViewModel @Inject constructor(
-    private var arguments: Bundle,
-    private var logger: ILogger,
-    private var contactsUseCases: IContactsUseCases,
-    private var navigation: INavigation,
-    private var systemNavigator: ISystemNavigator
+    private val arguments: Bundle,
+    private val logger: ILogger,
+    private val contactsUseCases: IContactsUseCases,
+    private val navigation: INavigation,
+    private val systemNavigator: ISystemNavigator
 ) : BaseViewModel(), IContactInfoViewModel {
 
     init {
