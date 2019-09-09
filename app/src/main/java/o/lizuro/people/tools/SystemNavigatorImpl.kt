@@ -22,7 +22,7 @@ class SystemNavigatorImpl @Inject constructor(
         val packageManager = appContext.packageManager
         val list = packageManager.queryIntentActivities(intent, PackageManager.MATCH_DEFAULT_ONLY)
         if (list.size > 0) {
-            appContext.startActivity(intent)
+            appContext.startActivity(intent.apply { addFlags(Intent.FLAG_ACTIVITY_NEW_TASK) })
         } else {
             notifier.notify("На устройстве отсутствует приложение, подходящее для выполнения данной задачи")
         }
